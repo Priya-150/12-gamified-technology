@@ -32,6 +32,11 @@
             background-color: #06B6D4; /* bg-cyan-500 */
             box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);
         }
+        .btn-primary:disabled {
+            background-color: #0E7490;
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
         .btn-secondary {
             background-color: #374151; /* bg-gray-700 */
             color: #D1D5DB; /* text-gray-300 */
@@ -138,7 +143,7 @@
                 <div id="score-text" class="font-roboto-mono text-emerald-400"></div>
             </div>
             <div class="w-full bg-gray-700 rounded-full h-2.5 mb-6">
-                <div id="progress-bar" class="bg-cyan-500 h-2.5 rounded-full" style="width: 0%"></div>
+                <div id="progress-bar" class="bg-cyan-500 h-2.5 rounded-full transition-all duration-300" style="width: 0%"></div>
             </div>
 
             <h2 id="question-text" class="text-2xl font-semibold mb-6 min-h-[100px]"></h2>
@@ -179,10 +184,21 @@
                         { q: "What does 'training' a model mean?", options: ["Teaching it to code", "Showing it a movie", "Feeding it data to learn patterns", "Deleting its errors"], answer: "Feeding it data to learn patterns", explanation: "Training involves providing a large dataset to the model so it can adjust its internal parameters to make accurate predictions." },
                         { q: "CNN is primarily used for what type of data?", options: ["Text", "Sound", "Numbers", "Images"], answer: "Images", explanation: "Convolutional Neural Networks (CNNs) are highly effective for tasks involving image recognition and computer vision." },
                         { q: "What does the 'Deep' in Deep Learning refer to?", options: ["Deep thoughts", "Many layers in the network", "Deep ocean data", "Complex code"], answer: "Many layers in the network", explanation: "The term 'Deep' signifies the presence of multiple hidden layers in the neural network, allowing it to learn more complex features." },
-                        { q: "What is 'overfitting' in machine learning?", options: ["Model is too big", "Model performs well on training data but poorly on new data", "Model is too fast", "Model uses too much power"], answer: "Model performs well on training data but poorly on new data", explanation: "Overfitting occurs when a model learns the training data too well, including its noise, and fails to generalize to unseen data." },
-                        { q: "Which activation function is known for outputting a probability between 0 and 1?", options: ["ReLU", "Tanh", "Sigmoid", "Leaky ReLU"], answer: "Sigmoid", explanation: "The Sigmoid function squashes its input into a range between 0 and 1, making it suitable for binary classification outputs." }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "What is the purpose of a pooling layer in a CNN?", options: ["To increase parameters", "To reduce spatial dimensions", "To add non-linearity", "To flatten the output"], answer: "To reduce spatial dimensions", explanation: "Pooling layers (like Max Pooling) downsample the feature maps, reducing computational load and making the model more robust to variations in feature positions." },
+                        { q: "Which of these is a common optimizer used in training neural networks?", options: ["Mean Squared Error", "Adam", "Cross-Entropy", "Softmax"], answer: "Adam", explanation: "Adam (Adaptive Moment Estimation) is an efficient optimization algorithm that combines the advantages of AdaGrad and RMSProp." },
+                        { q: "What is 'backpropagation'?", options: ["A method to calculate and propagate errors back through the network", "Sending the output back to the input", "A type of neural network", "Reversing the data flow"], answer: "A method to calculate and propagate errors back through the network", explanation: "Backpropagation is the core algorithm used to train neural networks by calculating the gradient of the loss function with respect to the network's weights." },
+                        { q: "RNNs (Recurrent Neural Networks) are best suited for what kind of data?", options: ["Image data", "Tabular data", "Sequential data (e.g., text)", "Categorical data"], answer: "Sequential data (e.g., text)", explanation: "RNNs have internal memory loops, making them ideal for processing sequences where context from previous steps is important." },
+                        { q: "What is the 'Vanishing Gradient' problem?", options: ["When gradients become extremely large", "When gradients become close to zero in deep networks", "When the model has no gradient", "When the loss function is flat"], answer: "When gradients become close to zero in deep networks", explanation: "In very deep networks, gradients can become increasingly small as they are propagated backward, making it difficult for earlier layers to learn effectively." },
+                    ],
+                    hard: [
+                        { q: "What is the main innovation of a Transformer model, compared to an RNN?", options: ["Convolutional layers", "Self-attention mechanism", "Recurrent loops", "Sigmoid activation"], answer: "Self-attention mechanism", explanation: "The Transformer architecture abandons recurrence and relies entirely on a self-attention mechanism to draw global dependencies between input and output." },
+                        { q: "What is a Generative Adversarial Network (GAN) composed of?", options: ["An Encoder and a Decoder", "A Master and a Slave model", "A Generator and a Discriminator", "A Classifier and a Regressor"], answer: "A Generator and a Discriminator", explanation: "GANs consist of two competing neural networks: a Generator that creates fake data, and a Discriminator that tries to distinguish fake data from real data." },
+                        { q: "In Reinforcement Learning, what is the function of the Q-value?", options: ["It measures the quality of a question", "It estimates the expected future rewards for taking an action in a state", "It's the model's final output", "It calculates the probability of a state"], answer: "It estimates the expected future rewards for taking an action in a state", explanation: "The Q-value (Quality-value) in Q-learning represents the total discounted future reward an agent can expect by taking a specific action in a specific state." },
+                        { q: "Which technique helps mitigate overfitting by randomly dropping units during training?", options: ["Batch Normalization", "Dropout", "Early Stopping", "Data Augmentation"], answer: "Dropout", explanation: "Dropout is a regularization technique where randomly selected neurons are ignored during training, preventing them from co-adapting too much." },
+                        { q: "What is the primary purpose of Batch Normalization?", options: ["To speed up training and stabilize the network", "To add more randomness", "To reduce the number of layers", "To convert data to a single batch"], answer: "To speed up training and stabilize the network", explanation: "Batch Normalization normalizes the inputs of each layer, which helps to combat the internal covariate shift problem, leading to faster and more stable training." }
+                    ]
                 },
                 "Automation": {
                     easy: [
@@ -190,11 +206,22 @@
                         { q: "Which task is a good candidate for automation?", options: ["Creative writing", "Strategic planning", "Copy-pasting data between spreadsheets", "Human resource interviews"], answer: "Copy-pasting data between spreadsheets", explanation: "Automation excels at tasks that are repetitive, high-volume, and follow a clear set of rules, like data entry." },
                         { q: "What is a 'workflow' in automation?", options: ["A group of workers", "A sequence of tasks", "A computer virus", "A type of robot"], answer: "A sequence of tasks", explanation: "A workflow defines the series of steps or tasks that are executed in a specific order to complete a process." },
                         { q: "Which of these is an automation tool?", options: ["Photoshop", "UiPath", "Visual Studio Code", "Figma"], answer: "UiPath", explanation: "UiPath is a leading platform for Robotic Process Automation (RPA), allowing users to design and deploy software robots." },
-                        { q: "What is the main goal of industrial automation?", options: ["To hire more people", "To increase production and efficiency", "To make factories look modern", "To reduce computer usage"], answer: "To increase production and efficiency", explanation: "The primary objective of industrial automation is to improve productivity, reduce errors, and enhance safety and efficiency in manufacturing." },
-                        { q: "An 'if-then' statement in automation is an example of what?", options: ["A robot's name", "A hardware component", "Rules-based logic", "A random process"], answer: "Rules-based logic", explanation: "If-then logic is fundamental to automation, where a specific action is taken only if a certain condition is met." },
                         { q: "What does 'unattended automation' mean?", options: ["The robot is not paying attention", "The robot works without human supervision", "The robot is broken", "The robot only works at night"], answer: "The robot works without human supervision", explanation: "Unattended bots can run scheduled tasks in the background on their own, typically for large-scale, batch-processing jobs." }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "What is 'attended automation'?", options: ["Automation that requires a ticket", "A bot that works alongside a human", "A bot that runs only during the day", "Automation that has failed"], answer: "A bot that works alongside a human", explanation: "Attended automation, or a 'robot assistant', is triggered by a human user on their desktop to automate parts of a task or an entire process." },
+                        { q: "In the context of automation, what is an API?", options: ["Advanced Programming Interface", "Automated Process Interaction", "Application Programming Interface", "Automated Python Installer"], answer: "Application Programming Interface", explanation: "An API allows different software applications to communicate with each other, which is crucial for integrating systems in an automation workflow." },
+                        { q: "What is 'screen scraping'?", options: ["Cleaning a monitor", "Extracting data from a user interface", "A type of cybersecurity attack", "Recording a video of the screen"], answer: "Extracting data from a user interface", explanation: "Screen scraping is a technique used by automation tools to capture and extract data from the screen of a legacy application that does not have an API." },
+                        { q: "What is the role of an orchestrator in RPA?", options: ["To design the robot", "To write the robot's code", "To manage, deploy, and monitor a fleet of robots", "To manually run the robot"], answer: "To manage, deploy, and monitor a fleet of robots", explanation: "An orchestrator (like UiPath Orchestrator) is a centralized server platform for managing and controlling all the software robots in an organization." },
+                        { q: "What does 'Cognitive Automation' add to traditional RPA?", options: ["More speed", "The ability to work at night", "Artificial intelligence and machine learning", "Better looking robots"], answer: "Artificial intelligence and machine learning", explanation: "Cognitive Automation enhances RPA by incorporating AI technologies like natural language processing (NLP) and computer vision, allowing bots to handle unstructured data and make decisions." }
+                    ],
+                    hard: [
+                        { q: "What is Hyperautomation?", options: ["Extremely fast automation", "A framework for scaling automation using multiple tools", "Automation done in the cloud", "A type of robot hardware"], answer: "A framework for scaling automation using multiple tools", explanation: "Hyperautomation is a business-driven approach to identify, vet, and automate as many processes as possible using a combination of RPA, AI, process mining, and other technologies." },
+                        { q: "What is 'Process Mining' used for in automation?", options: ["To find valuable minerals in a computer", "To automatically discover, monitor, and improve real processes", "To design a workflow from scratch", "To delete old processes"], answer: "To automatically discover, monitor, and improve real processes", explanation: "Process mining tools analyze event logs from IT systems to create a visual model of how business processes are actually performing, revealing bottlenecks and automation opportunities." },
+                        { q: "What is a 'selector' in the context of UI automation?", options: ["A person who selects a robot", "A dropdown menu on a website", "An address for a specific UI element (like a button or text box)", "A type of automation license"], answer: "An address for a specific UI element (like a button or text box)", explanation: "Selectors are strings (often XML fragments) that store the attributes of a graphical user interface element, enabling the robot to reliably identify and interact with it." },
+                        { q: "Why is error handling crucial in an unattended automation?", options: ["It makes the code longer", "To ensure the robot can recover from unexpected issues and complete its job", "To make the robot look smarter", "It's a legal requirement"], answer: "To ensure the robot can recover from unexpected issues and complete its job", explanation: "Since no human is watching, robust error handling and exception management are vital for an unattended bot to handle application changes, data issues, or other exceptions without failing completely." },
+                        { q: "What is the difference between a 'sequence' and a 'flowchart' in a process designer?", options: ["There is no difference", "A sequence is for small, linear tasks; a flowchart is for complex logic with multiple branches", "A flowchart is for robots, a sequence is for humans", "A sequence runs faster than a flowchart"], answer: "A sequence is for small, linear tasks; a flowchart is for complex logic with multiple branches", explanation: "A sequence is a simple, top-to-bottom set of activities, suitable for straightforward processes. A flowchart allows for more complex control flow with decisions (if/else) and branches, like a traditional diagram." }
+                    ]
                 },
                 "Ethical Hacking": {
                     easy: [
@@ -202,37 +229,71 @@
                         { q: "What is the main goal of ethical hacking?", options: ["To steal data", "To crash systems", "To identify and fix security weaknesses", "To create viruses"], answer: "To identify and fix security weaknesses", explanation: "The primary purpose is to proactively find vulnerabilities before malicious attackers can exploit them." },
                         { q: "What is a 'phishing' attack?", options: ["A fishing trip for hackers", "A type of computer hardware", "An attempt to steal sensitive information through deceptive emails or websites", "A method to cool down a server"], answer: "An attempt to steal sensitive information through deceptive emails or websites", explanation: "Phishing attacks trick users into revealing information like passwords or credit card numbers by masquerading as a trustworthy entity." },
                         { q: "In hacking, what does 'pentesting' stand for?", options: ["Penetration Testing", "Permanent Testing", "Pencil Testing", "Pentagon Testing"], answer: "Penetration Testing", explanation: "Penetration Testing is a simulated cyber attack against your computer system to check for exploitable vulnerabilities." },
-                        { q: "Which of these is a common tool used by ethical hackers?", options: ["Microsoft Word", "Nmap", "Calculator", "Google Chrome"], answer: "Nmap", explanation: "Nmap (Network Mapper) is a powerful, free tool used for network discovery and security auditing." },
-                        { q: "What is a 'firewall'?", options: ["A physical wall that is on fire", "A software that writes code", "A network security device that monitors and filters traffic", "A type of malware"], answer: "A network security device that monitors and filters traffic", explanation: "A firewall acts as a barrier between a trusted internal network and an untrusted external network, like the Internet." },
-                        { q: "What is a 'strong' password?", options: ["Your name", "123456", "A long mix of upper/lower case letters, numbers, and symbols", "password"], answer: "A long mix of upper/lower case letters, numbers, and symbols", explanation: "A strong password is long and complex, making it difficult for attackers to guess or crack using brute-force methods." }
+                        { q: "What is a 'firewall'?", options: ["A physical wall that is on fire", "A software that writes code", "A network security device that monitors and filters traffic", "A type of malware"], answer: "A network security device that monitors and filters traffic", explanation: "A firewall acts as a barrier between a trusted internal network and an untrusted external network, like the Internet." }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "What are the three core principles of information security (the 'CIA Triad')?", options: ["Confidentiality, Integrity, Availability", "Control, Information, Access", "Cybersecurity, Intelligence, Attack", "Connection, Intrusion, Action"], answer: "Confidentiality, Integrity, Availability", explanation: "These three principles form the foundation of information security: Confidentiality (keeping data secret), Integrity (ensuring data is not altered), and Availability (ensuring data is accessible when needed)." },
+                        { q: "What is a 'Man-in-the-Middle' (MITM) attack?", options: ["An attack on a server in the central US", "An attacker secretly intercepts and relays communication between two parties", "A physical attack on a network switch", "A type of phishing email"], answer: "An attacker secretly intercepts and relays communication between two parties", explanation: "In a MITM attack, the attacker positions themselves between two communicating parties to eavesdrop on or manipulate the traffic, while the parties believe they are communicating directly." },
+                        { q: "What is 'SQL Injection'?", options: ["Injecting more memory into a database", "A code injection technique used to attack data-driven applications", "A method to speed up database queries", "A type of database software"], answer: "A code injection technique used to attack data-driven applications", explanation: "SQL Injection occurs when an attacker inserts malicious SQL code into a query, which can allow them to bypass authentication, view, modify, or delete data." },
+                        { q: "Which of these describes a 'Zero-Day' vulnerability?", options: ["A vulnerability that has existed for less than 24 hours", "A vulnerability that is easy to exploit", "A vulnerability that has been disclosed but not yet patched by the vendor", "A vulnerability with no impact"], answer: "A vulnerability that has been disclosed but not yet patched by the vendor", explanation: "A 'zero-day' vulnerability is a security flaw that is known to attackers (or the public) before the software vendor has a patch available, leaving systems open to attack." },
+                        { q: "What is 'social engineering' in the context of hacking?", options: ["Designing a social media network for hackers", "The psychological manipulation of people into performing actions or divulging confidential information", "An engineering conference on social topics", "Building a computer from social media comments"], answer: "The psychological manipulation of people into performing actions or divulging confidential information", explanation: "Social engineering relies on human interaction and trust to trick people into breaking normal security procedures, often being a precursor to a larger technical hack." }
+                    ],
+                    hard: [
+                        { q: "What is a 'Cross-Site Scripting' (XSS) attack?", options: ["A script that blocks websites", "An attack where malicious scripts are injected into otherwise benign and trusted websites", "A tool for testing website performance", "A method for linking two websites together"], answer: "An attack where malicious scripts are injected into otherwise benign and trusted websites", explanation: "XSS attacks occur when an attacker uses a web application to send malicious code, generally in the form of a browser-side script, to a different end user, bypassing access controls." },
+                        { q: "What is the difference between a virus and a worm?", options: ["A worm is a type of virus", "A virus requires a host program to spread, while a worm can self-replicate across networks", "A virus infects hardware, a worm infects software", "There is no difference"], answer: "A virus requires a host program to spread, while a worm can self-replicate across networks", explanation: "A key difference is propagation. A virus attaches itself to a file or program and relies on human action to spread it. A worm is a standalone piece of malware that replicates itself to spread to other computers, often exploiting a vulnerability." },
+                        { q: "What is a 'DDoS' attack?", options: ["Direct Denial of Service", "Distributed Denial of Service", "Data Deletion of Service", "Digital Deconstruction of Service"], answer: "Distributed Denial of Service", explanation: "A DDoS attack is a malicious attempt to disrupt the normal traffic of a targeted server or network by overwhelming the target with a flood of Internet traffic from multiple sources (a 'botnet')." },
+                        { q: "During a penetration test, what is 'privilege escalation'?", options: ["Asking for more payment", "The act of exploiting a bug or vulnerability to gain elevated access to resources", "Switching from a slow to a fast internet connection", "Getting a promotion for hacking successfully"], answer: "The act of exploiting a bug or vulnerability to gain elevated access to resources", explanation: "Privilege escalation is a critical phase where an attacker who has gained initial, low-level access to a system then exploits vulnerabilities to gain higher-level permissions, such as administrator or root access." },
+                        { q: "What is a 'buffer overflow' vulnerability?", options: ["Having too much data in a buffer", "An anomaly where a program, while writing data to a buffer, overruns the buffer's boundary and overwrites adjacent memory", "A network traffic jam", "A feature that makes buffers bigger"], answer: "An anomaly where a program, while writing data to a buffer, overruns the buffer's boundary and overwrites adjacent memory", explanation: "This can be exploited by attackers to inject and execute malicious code, crash a system, or corrupt data. It's a common vulnerability in low-level languages like C/C++." }
+                    ]
                 }
             },
             hindi: {
-                "Deep Learning": {
+                // ... (Hindi translations for all new questions)
+                 "Deep Learning": {
                     easy: [
                         { q: "न्यूरल नेटवर्क की मूल इकाई क्या है?", options: ["न्यूरॉन", "पिक्सेल", "नोड.जेएस", "एल्गोरिथम"], answer: "न्यूरॉन", explanation: "एक न्यूरॉन, या नोड, एक न्यूरल नेटवर्क की मौलिक प्रसंस्करण इकाई है, जो जैविक न्यूरॉन से प्रेरित है।" },
                         { q: "इनमें से कौन सा एक लोकप्रिय डीप लर्निंग फ्रेमवर्क है?", options: ["रिएक्ट", "टेन्सरफ्लो", "एंगुलर", "जैंगो"], answer: "टेन्सरफ्लो", explanation: "Google द्वारा विकसित टेन्सरफ्लो, डीप लर्निंग के लिए सबसे व्यापक रूप से उपयोग की जाने वाली ओपन-सोर्स लाइब्रेरी में से एक है।" },
                         { q: "एक मॉडल को 'प्रशिक्षित' करने का क्या अर्थ है?", options: ["उसे कोड करना सिखाना", "उसे फिल्म दिखाना", "पैटर्न सीखने के लिए उसे डेटा देना", "उसकी त्रुटियों को हटाना"], answer: "पैटर्न सीखने के लिए उसे डेटा देना", explanation: "प्रशिक्षण में मॉडल को एक बड़ा डेटासेट प्रदान करना शामिल है ताकि वह सटीक भविष्यवाणियां करने के लिए अपने आंतरिक मापदंडों को समायोजित कर सके।" },
                         { q: "CNN का मुख्य रूप से किस प्रकार के डेटा के लिए उपयोग किया जाता है?", options: ["टेक्स्ट", "ध्वनि", "संख्याएं", "छवियाँ"], answer: "छवियाँ", explanation: "कनवल्शनल न्यूरल नेटवर्क्स (CNNs) छवि पहचान और कंप्यूटर विजन से जुड़े कार्यों के लिए अत्यधिक प्रभावी हैं।" },
-                        { q: "डीप लर्निंग में 'डीप' का क्या अर्थ है?", options: ["गहरे विचार", "नेटवर्क में कई परतें", "गहरे समुद्र का डेटा", "जटिल कोड"], answer: "नेटवर्क में कई परतें", explanation: "'डीप' शब्द न्यूरल नेटवर्क में कई छिपी हुई परतों की उपस्थिति को दर्शाता है, जिससे यह अधिक जटिल विशेषताओं को सीख सकता है।" },
-                        { q: "मशीन लर्निंग में 'ओवरफिटिंग' क्या है?", options: ["मॉडल बहुत बड़ा है", "मॉडल प्रशिक्षण डेटा पर अच्छा प्रदर्शन करता है लेकिन नए डेटा पर खराब", "मॉडल बहुत तेज है", "मॉडल बहुत अधिक शक्ति का उपयोग करता है"], answer: "मॉडल प्रशिक्षण डेटा पर अच्छा प्रदर्शन करता है लेकिन नए डेटा पर खराब", explanation: "ओवरफिटिंग तब होती है जब कोई मॉडल प्रशिक्षण डेटा को बहुत अच्छी तरह से सीख लेता है, जिसमें उसका शोर भी शामिल है, और अनदेखे डेटा के लिए सामान्यीकरण करने में विफल रहता है।" },
-                        { q: "कौन सा एक्टिवेशन फ़ंक्शन 0 और 1 के बीच संभाव्यता को आउटपुट करने के लिए जाना जाता है?", options: ["ReLU", "Tanh", "सिग्मॉइड", "लीकी ReLU"], answer: "सिग्मॉइड", explanation: "सिग्मॉइड फ़ंक्शन अपने इनपुट को 0 और 1 के बीच की सीमा में निचोड़ता है, जो इसे बाइनरी वर्गीकरण आउटपुट के लिए उपयुक्त बनाता है।" }
+                        { q: "डीप लर्निंग में 'डीप' का क्या अर्थ है?", options: ["गहरे विचार", "नेटवर्क में कई परतें", "गहरे समुद्र का डेटा", "जटिल कोड"], answer: "नेटवर्क में कई परतें", explanation: "'डीप' शब्द न्यूरल नेटवर्क में कई छिपी हुई परतों की उपस्थिति को दर्शाता है, जिससे यह अधिक जटिल विशेषताओं को सीख सकता है।" }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "CNN में पूलिंग लेयर का उद्देश्य क्या है?", options: ["पैरामीटर बढ़ाना", "स्थानिक आयामों को कम करना", "गैर-रैखिकता जोड़ना", "आउटपुट को समतल करना"], answer: "स्थानिक आयामों को कम करना", explanation: "पूलिंग लेयर (जैसे मैक्स पूलिंग) फीचर मैप्स को डाउनसैंपल करती हैं, जिससे कम्प्यूटेशनल लोड कम होता है और मॉडल फीचर पोजीशन में बदलाव के प्रति अधिक मजबूत बनता है।" },
+                        { q: "इनमें से कौन सा न्यूरल नेटवर्क के प्रशिक्षण में उपयोग किया जाने वाला एक सामान्य ऑप्टिमाइज़र है?", options: ["मीन स्क्वेर्ड एरर", "एडम", "क्रॉस-एन्ट्रॉपी", "सॉफ्टमैक्स"], answer: "एडम", explanation: "एडम (एडैप्टिव मोमेंट एस्टीमेशन) एक कुशल ऑप्टिमाइज़ेशन एल्गोरिथ्म है जो AdaGrad और RMSProp के फायदों को जोड़ता है।" },
+                        { q: "'बैकप्रॉपैगेशन' क्या है?", options: ["नेटवर्क के माध्यम से त्रुटियों की गणना और प्रसार करने की एक विधि", "आउटपुट को इनपुट पर वापस भेजना", "एक प्रकार का न्यूरल नेटवर्क", "डेटा प्रवाह को उलटना"], answer: "नेटवर्क के माध्यम से त्रुटियों की गणना और प्रसार करने की एक विधि", explanation: "बैकप्रॉपैगेशन न्यूरल नेटवर्क को प्रशिक्षित करने के लिए उपयोग किया जाने वाला मुख्य एल्गोरिथ्म है, जो नेटवर्क के वेट्स के संबंध में लॉस फ़ंक्शन के ग्रेडिएंट की गणना करता है।" },
+                        { q: "RNNs (रिकरेंट न्यूरल नेटवर्क्स) किस प्रकार के डेटा के लिए सबसे उपयुक्त हैं?", options: ["छवि डेटा", "सारणीबद्ध डेटा", "अनुक्रमिक डेटा (जैसे, टेक्स्ट)", "श्रेणीबद्ध डेटा"], answer: "अनुक्रमिक डेटा (जैसे, टेक्स्ट)", explanation: "RNNs में आंतरिक मेमोरी लूप होते हैं, जो उन्हें उन अनुक्रमों को संसाधित करने के लिए आदर्श बनाते हैं जहां पिछले चरणों का संदर्भ महत्वपूर्ण होता है।" },
+                        { q: "'वैनिशिंग ग्रेडिएंट' समस्या क्या है?", options: ["जब ग्रेडिएंट बहुत बड़े हो जाते हैं", "जब गहरे नेटवर्क में ग्रेडिएंट शून्य के करीब हो जाते हैं", "जब मॉडल में कोई ग्रेडिएंट नहीं होता है", "जब लॉस फ़ंक्शन सपाट होता है"], answer: "जब गहरे नेटवर्क में ग्रेडिएंट शून्य के करीब हो जाते हैं", explanation: "बहुत गहरे नेटवर्क में, ग्रेडिएंट पीछे की ओर प्रसारित होने पर तेजी से छोटे हो सकते हैं, जिससे शुरुआती परतों के लिए प्रभावी ढंग से सीखना मुश्किल हो जाता है।" }
+                    ],
+                    hard: [
+                        { q: "RNN की तुलना में ट्रांसफॉर्मर मॉडल का मुख्य नवाचार क्या है?", options: ["कनवल्शनल लेयर्स", "सेल्फ-अटेंशन मैकेनिज्म", "रिकरेंट लूप्स", "सिग्मॉइड एक्टिवेशन"], answer: "सेल्फ-अटENTION मैकेनिज्म", explanation: "ट्रांसफॉर्मर आर्किटेक्चर पुनरावृत्ति को छोड़ देता है और इनपुट और आउटपुट के बीच वैश्विक निर्भरता खींचने के लिए पूरी तरह से सेल्फ-अटेंशन मैकेनिज्म पर निर्भर करता है।" },
+                        { q: "एक जनरेटिव एडवरसैरियल नेटवर्क (GAN) किससे बना होता है?", options: ["एक एनकोडर और एक डिकोडर", "एक मास्टर और एक स्लेव मॉडल", "एक जनरेटर और एक डिस्क्रिमिनेटर", "एक क्लासिफायर और एक रिग्रेसर"], answer: "एक जनरेटर और एक डिस्क्रिमिनेटर", explanation: "GANs में दो प्रतिस्पर्धी न्यूरल नेटवर्क होते हैं: एक जनरेटर जो नकली डेटा बनाता है, और एक डिस्क्रिमिनेटर जो नकली डेटा को वास्तविक डेटा से अलग करने की कोशिश करता है।" },
+                        { q: "रीइन्फोर्समेंट लर्निंग में, Q-वैल्यू का क्या कार्य है?", options: ["यह एक प्रश्न की गुणवत्ता को मापता है", "यह एक स्टेट में एक एक्शन लेने के लिए अपेक्षित भविष्य के पुरस्कारों का अनुमान लगाता है", "यह मॉडल का अंतिम आउटपुट है", "यह एक स्टेट की संभावना की गणना करता है"], answer: "यह एक स्टेट में एक एक्शन लेने के लिए अपेक्षित भविष्य के पुरस्कारों का अनुमान लगाता है", explanation: "Q-लर्निंग में Q-वैल्यू (क्वालिटी-वैल्यू) उस कुल छूट वाले भविष्य के इनाम का प्रतिनिधित्व करता है जिसकी एक एजेंट एक विशिष्ट स्टेट में एक विशिष्ट एक्शन लेकर उम्मीद कर सकता है।" },
+                        { q: "कौन सी तकनीक प्रशिक्षण के दौरान इकाइयों को यादृच्छिक रूप से छोड़कर ओवरफिटिंग को कम करने में मदद करती है?", options: ["बैच नॉर्मलाइजेशन", "ड्रॉपआउट", "अर्ली स्टॉपिंग", "डेटा ऑग्मेंटेशन"], answer: "ड्रॉपआउट", explanation: "ड्रॉपआउट एक régularisation तकनीक है जिसमें प्रशिक्षण के दौरान यादृच्छिक रूप से चयनित न्यूरॉन्स को नजरअंदाज कर दिया जाता है, जिससे उन्हें बहुत अधिक सह-अनुकूलन से रोका जा सके।" },
+                        { q: "बैच नॉर्मलाइजेशन का प्राथमिक उद्देश्य क्या है?", options: ["प्रशिक्षण में तेजी लाना और नेटवर्क को स्थिर करना", "अधिक यादृच्छिकता जोड़ना", "परतों की संख्या कम करना", "डेटा को एक बैच में बदलना"], answer: "प्रशिक्षण में तेजी लाना और नेटवर्क को स्थिर करना", explanation: "बैच नॉर्मलाइजेशन प्रत्येक परत के इनपुट को सामान्य करता है, जो आंतरिक सहसंयोजक शिफ्ट समस्या से निपटने में मदद करता है, जिससे तेज और अधिक स्थिर प्रशिक्षण होता है।" }
+                    ]
                 },
                 "Automation": {
-                    easy: [
+                     easy: [
                         { q: "RPA का पूरा नाम क्या है?", options: ["रोबोटिक प्रोसेस ऑटोमेशन", "रियल प्रोसेस एक्शन", "रोबोटिक पर्सनल असिस्टेंट", "रियल-टाइम प्रोसेस ऑटोमेशन"], answer: "रोबोटिक प्रोसेस ऑटोमेशन", explanation: "RPA एक ऐसी तकनीक है जो दोहराए जाने वाले, नियमों पर आधारित व्यावसायिक प्रक्रियाओं को स्वचालित करने के लिए सॉफ्टवेयर रोबोट या 'बॉट्स' का उपयोग करती है।" },
                         { q: "कौन सा कार्य स्वचालन के लिए एक अच्छा उम्मीदवार है?", options: ["रचनात्मक लेखन", "रणनीतिक योजना", "स्प्रेडशीट के बीच डेटा कॉपी-पेस्ट करना", "मानव संसाधन साक्षात्कार"], answer: "स्प्रेडशीट के बीच डेटा कॉपी-पेस्ट करना", explanation: "स्वचालन उन कार्यों में उत्कृष्टता प्राप्त करता है जो दोहराए जाने वाले, उच्च-मात्रा वाले होते हैं, और नियमों के एक स्पष्ट सेट का पालन करते हैं, जैसे डेटा प्रविष्टि।" },
                         { q: "स्वचालन में 'वर्कफ़्लो' क्या है?", options: ["श्रमिकों का एक समूह", "कार्यों का एक क्रम", "एक कंप्यूटर वायरस", "एक प्रकार का रोबोट"], answer: "कार्यों का एक क्रम", explanation: "एक वर्कफ़्लो उन चरणों या कार्यों की श्रृंखला को परिभाषित करता है जो किसी प्रक्रिया को पूरा करने के लिए एक विशिष्ट क्रम में निष्पादित होते हैं।" },
                         { q: "इनमें से कौन सा एक स्वचालन उपकरण है?", options: ["फोटोशॉप", "UiPath", "विजुअल स्टूडियो कोड", "फिग्मा"], answer: "UiPath", explanation: "UiPath रोबोटिक प्रोसेस ऑटोमेशन (RPA) के लिए एक प्रमुख मंच है, जो उपयोगकर्ताओं को सॉफ्टवेयर रोबोट डिजाइन और तैनात करने की अनुमति देता है।" },
-                        { q: "औद्योगिक स्वचालन का मुख्य लक्ष्य क्या है?", options: ["अधिक लोगों को काम पर रखना", "उत्पादन और दक्षता बढ़ाना", "कारखानों को आधुनिक दिखाना", "कंप्यूटर का उपयोग कम करना"], answer: "उत्पादन और दक्षता बढ़ाना", explanation: "औद्योगिक स्वचालन का प्राथमिक उद्देश्य उत्पादकता में सुधार करना, त्रुटियों को कम करना और विनिर्माण में सुरक्षा और दक्षता को बढ़ाना है।" },
-                        { q: "स्वचालन में 'यदि-तब' कथन किसका एक उदाहरण है?", options: ["एक रोबोट का नाम", "एक हार्डवेयर घटक", "नियम-आधारित तर्क", "एक यादृच्छिक प्रक्रिया"], answer: "नियम-आधारित तर्क", explanation: "यदि-तब तर्क स्वचालन के लिए मौलिक है, जहां एक विशिष्ट कार्रवाई तभी की जाती है जब एक निश्चित शर्त पूरी होती है।" },
                         { q: "'अनअटेंडेड ऑटोमेशन' का क्या मतलब है?", options: ["रोबोट ध्यान नहीं दे रहा है", "रोबोट बिना मानवीय पर्यवेक्षण के काम करता है", "रोबोट टूट गया है", "रोबोट केवल रात में काम करता है"], answer: "रोबोट बिना मानवीय पर्यवेक्षण के काम करता है", explanation: "अनअटेंडेड बॉट अपने आप पृष्ठभूमि में निर्धारित कार्यों को चला सकते हैं, आमतौर पर बड़े पैमाने पर, बैच-प्रोसेसिंग नौकरियों के लिए।" }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "'अटेंडेड ऑटोमेशन' क्या है?", options: ["स्वचालन जिसके लिए टिकट की आवश्यकता होती है", "एक बॉट जो एक इंसान के साथ काम करता है", "एक बॉट जो केवल दिन के दौरान चलता है", "स्वचालन जो विफल हो गया है"], answer: "एक बॉट जो एक इंसान के साथ काम करता है", explanation: "अटेंडेड ऑटोमेशन, या 'रोबोट असिस्टेंट', किसी कार्य के कुछ हिस्सों या पूरी प्रक्रिया को स्वचालित करने के लिए उपयोगकर्ता द्वारा उनके डेस्कटॉप पर शुरू किया जाता है।" },
+                        { q: "स्वचालन के संदर्भ में, API क्या है?", options: ["एडवांस्ड प्रोग्रामिंग इंटरफ़ेस", "ऑटोमेटेड प्रोसेस इंटरेक्शन", "एप्लिकेशन प्रोग्रामिंग इंटरफ़ेस", "ऑटोमेटेड पायथन इंस्टॉलर"], answer: "एप्लिकेशन प्रोग्रामिंग इंटरफ़ेस", explanation: "एक API विभिन्न सॉफ्टवेयर अनुप्रयोगों को एक दूसरे के साथ संवाद करने की अनुमति देता है, जो एक स्वचालन वर्कफ़्लो में सिस्टम को एकीकृत करने के लिए महत्वपूर्ण है।" },
+                        { q: "'स्क्रीन स्क्रैपिंग' क्या है?", options: ["एक मॉनिटर की सफाई", "एक यूजर इंटरफेस से डेटा निकालना", "एक प्रकार का साइबर सुरक्षा हमला", "स्क्रीन का वीडियो रिकॉर्ड करना"], answer: "एक यूजर इंटरफेस से डेटा निकालना", explanation: "स्क्रीन स्क्रैपिंग एक तकनीक है जिसका उपयोग स्वचालन उपकरण द्वारा एक पुराने एप्लिकेशन की स्क्रीन से डेटा कैप्चर करने और निकालने के लिए किया जाता है जिसमें API नहीं होता है।" },
+                        { q: "RPA में ऑर्केस्ट्रेटर की क्या भूमिका है?", options: ["रोबोट डिजाइन करना", "रोबोट का कोड लिखना", "रोबोट के एक बेड़े का प्रबंधन, तैनाती और निगरानी करना", "रोबोट को मैन्युअल रूप से चलाना"], answer: "रोबोट के एक बेड़े का प्रबंधन, तैनाती और निगरानी करना", explanation: "एक ऑर्केस्ट्रेटर (जैसे UiPath ऑर्केस्ट्रेटर) एक संगठन में सभी सॉफ्टवेयर रोबोटों के प्रबंधन और नियंत्रण के लिए एक केंद्रीकृत सर्वर प्लेटफॉर्म है।" },
+                        { q: "'संज्ञानात्मक स्वचालन' पारंपरिक RPA में क्या जोड़ता है?", options: ["अधिक गति", "रात में काम करने की क्षमता", "कृत्रिम बुद्धिमत्ता और मशीन लर्निंग", "बेहतर दिखने वाले रोबोट"], answer: "कृत्रिम बुद्धिमत्ता और मशीन लर्निंग", explanation: "संज्ञानात्मक स्वचालन प्राकृतिक भाषा प्रसंस्करण (NLP) और कंप्यूटर दृष्टि जैसी AI तकनीकों को शामिल करके RPA को बढ़ाता है, जिससे बॉट्स असंरचित डेटा को संभाल सकते हैं और निर्णय ले सकते हैं।" }
+                    ],
+                    hard: [
+                        { q: "हाइपरऑटोमेशन क्या है?", options: ["अत्यंत तेज़ स्वचालन", "कई उपकरणों का उपयोग करके स्वचालन को बढ़ाने के लिए एक रूपरेखा", "क्लाउड में किया गया स्वचालन", "एक प्रकार का रोबोट हार्डवेयर"], answer: "कई उपकरणों का उपयोग करके स्वचालन को बढ़ाने के लिए एक रूपरेखा", explanation: "हाइपरऑटोमेशन एक व्यवसाय-संचालित दृष्टिकोण है जो RPA, AI, प्रोसेस माइनिंग और अन्य तकनीकों के संयोजन का उपयोग करके यथासंभव अधिक से अधिक प्रक्रियाओं की पहचान, जांच और स्वचालन करता है।" },
+                        { q: "स्वचालन में 'प्रोसेस माइनिंग' का उपयोग किस लिए किया जाता है?", options: ["कंप्यूटर में मूल्यवान खनिज खोजने के लिए", "वास्तविक प्रक्रियाओं को स्वचालित रूप से खोजने, निगरानी करने और सुधारने के लिए", "शून्य से एक वर्कफ़्लो डिजाइन करने के लिए", "पुरानी प्रक्रियाओं को हटाने के लिए"], answer: "वास्तविक प्रक्रियाओं को स्वचालित रूप से खोजने, निगरानी करने और सुधारने के लिए", explanation: "प्रोसेस माइनिंग उपकरण आईटी सिस्टम से इवेंट लॉग का विश्लेषण करते हैं ताकि यह पता चल सके कि व्यावसायिक प्रक्रियाएं वास्तव में कैसा प्रदर्शन कर रही हैं, बाधाओं और स्वचालन के अवसरों को उजागर करती हैं।" },
+                        { q: "UI स्वचालन के संदर्भ में 'चयनकर्ता' क्या है?", options: ["एक व्यक्ति जो एक रोबोट का चयन करता है", "एक वेबसाइट पर एक ड्रॉपडाउन मेनू", "एक विशिष्ट UI तत्व (जैसे एक बटन या टेक्स्ट बॉक्स) के लिए एक पता", "एक प्रकार का स्वचालन लाइसेंस"], answer: "एक विशिष्ट UI तत्व (जैसे एक बटन या टेक्स्ट बॉक्स) के लिए एक पता", explanation: "चयनकर्ता स्ट्रिंग्स (अक्सर XML टुकड़े) होते हैं जो एक ग्राफिकल यूजर इंटरफेस तत्व की विशेषताओं को संग्रहीत करते हैं, जिससे रोबोट इसे मज़बूती से पहचान और बातचीत कर सकता है।" },
+                        { q: "एक अनअटेंडेड स्वचालन में त्रुटि प्रबंधन क्यों महत्वपूर्ण है?", options: ["यह कोड को लंबा बनाता है", "यह सुनिश्चित करने के लिए कि रोबोट अप्रत्याशित मुद्दों से उबर सकता है और अपना काम पूरा कर सकता है", "रोबोट को होशियार दिखाने के लिए", "यह एक कानूनी आवश्यकता है"], answer: "यह सुनिश्चित करने के लिए कि रोबोट अप्रत्याशित मुद्दों से उबर सकता है और अपना काम पूरा कर सकता है", explanation: "चूंकि कोई इंसान नहीं देख रहा है, इसलिए एक अनअटेंडेड बॉट के लिए एप्लिकेशन परिवर्तन, डेटा समस्याओं या अन्य अपवादों को पूरी तरह से विफल हुए बिना संभालने के लिए मजबूत त्रुटि प्रबंधन महत्वपूर्ण है।" },
+                        { q: "एक प्रक्रिया डिजाइनर में 'अनुक्रम' और 'फ़्लोचार्ट' के बीच क्या अंतर है?", options: ["कोई अंतर नहीं है", "एक अनुक्रम छोटे, रैखिक कार्यों के लिए है; एक फ़्लोचार्ट कई शाखाओं के साथ जटिल तर्क के लिए है", "एक फ़्लोचार्ट रोबोट के लिए है, एक अनुक्रम मनुष्यों के लिए है", "एक अनुक्रम एक फ़्लोचार्ट से तेज़ चलता है"], answer: "एक अनुक्रम छोटे, रैखिक कार्यों के लिए है; एक फ़्लोचार्ट कई शाखाओं के साथ जटिल तर्क के लिए है", explanation: "एक अनुक्रम गतिविधियों का एक सरल, ऊपर से नीचे का सेट है, जो सीधी प्रक्रियाओं के लिए उपयुक्त है। एक फ़्लोचार्ट निर्णयों (यदि/अन्यथा) और शाखाओं के साथ अधिक जटिल नियंत्रण प्रवाह की अनुमति देता है, जैसे एक पारंपरिक आरेख।" }
+                    ]
                 },
                 "Ethical Hacking": {
                     easy: [
@@ -240,65 +301,97 @@
                         { q: "एथिकल हैकिंग का मुख्य लक्ष्य क्या है?", options: ["डेटा चुराना", "सिस्टम क्रैश करना", "सुरक्षा कमजोरियों की पहचान और उन्हें ठीक करना", "वायरस बनाना"], answer: "सुरक्षा कमजोरियों की पहचान और उन्हें ठीक करना", explanation: "इसका प्राथमिक उद्देश्य दुर्भावनापूर्ण हमलावरों द्वारा उनका फायदा उठाने से पहले सक्रिय रूप से कमजोरियों को खोजना है।" },
                         { q: "'फ़िशिंग' हमला क्या है?", options: ["हैकर्स के लिए मछली पकड़ने की यात्रा", "एक प्रकार का कंप्यूटर हार्डवेयर", "भ्रामक ईमेल या वेबसाइटों के माध्यम से संवेदनशील जानकारी चुराने का प्रयास", "एक सर्वर को ठंडा करने की एक विधि"], answer: "भ्रामक ईमेल या वेबसाइटों के माध्यम से संवेदनशील जानकारी चुराने का प्रयास", explanation: "फ़िशिंग हमले उपयोगकर्ताओं को एक भरोसेमंद इकाई के रूप में प्रस्तुत करके पासवर्ड या क्रेडिट कार्ड नंबर जैसी जानकारी प्रकट करने के लिए धोखा देते हैं।" },
                         { q: "हैकिंग में, 'पेनटेस्टिंग' का क्या अर्थ है?", options: ["पेनेट्रेशन टेस्टिंग", "परमानेंट टेस्टिंग", "पेंसिल टेस्टिंग", "पेंटागन टेस्टिंग"], answer: "पेनेट्रेशन टेस्टिंग", explanation: "पेनेट्रेशन टेस्टिंग आपके कंप्यूटर सिस्टम के खिलाफ एक नकली साइबर हमला है ताकि शोषक कमजोरियों की जांच की जा सके।" },
-                        { q: "इनमें से कौन सा एक सामान्य उपकरण है जिसका उपयोग एथिकल हैकर्स द्वारा किया जाता है?", options: ["माइक्रोसॉफ्ट वर्ड", "एनमैप", "कैलकुलेटर", "गूगल क्रोम"], answer: "एनमैप", explanation: "एनमैप (नेटवर्क मैपर) नेटवर्क खोज और सुरक्षा ऑडिटिंग के लिए उपयोग किया जाने वाला एक शक्तिशाली, मुफ्त उपकरण है।" },
-                        { q: "'फ़ायरवॉल' क्या है?", options: ["एक भौतिक दीवार जिसमें आग लगी हो", "एक सॉफ्टवेयर जो कोड लिखता है", "एक नेटवर्क सुरक्षा उपकरण जो ट्रैफिक की निगरानी और फ़िल्टर करता है", "एक प्रकार का मैलवेयर"], answer: "एक नेटवर्क सुरक्षा उपकरण जो ट्रैफिक की निगरानी और फ़िल्टर करता है", explanation: "एक फ़ायरवॉल एक विश्वसनीय आंतरिक नेटवर्क और एक अविश्वसनीय बाहरी नेटवर्क, जैसे इंटरनेट, के बीच एक बाधा के रूप में कार्य करता है।" },
-                        { q: "एक 'मजबूत' पासवर्ड क्या है?", options: ["आपका नाम", "123456", "बड़े/छोटे अक्षरों, संख्याओं और प्रतीकों का एक लंबा मिश्रण", "पासवर्ड"], answer: "बड़े/छोटे अक्षरों, संख्याओं और प्रतीकों का एक लंबा मिश्रण", explanation: "एक मजबूत पासवर्ड लंबा और जटिल होता है, जिससे हमलावरों के लिए ब्रूट-फोर्स तरीकों का उपयोग करके अनुमान लगाना या क्रैक करना मुश्किल हो जाता है।" }
+                        { q: "'फ़ायरवॉल' क्या है?", options: ["एक भौतिक दीवार जिसमें आग लगी हो", "एक सॉफ्टवेयर जो कोड लिखता है", "एक नेटवर्क सुरक्षा उपकरण जो ट्रैफिक की निगरानी और फ़िल्टर करता है", "एक प्रकार का मैलवेयर"], answer: "एक नेटवर्क सुरक्षा उपकरण जो ट्रैफिक की निगरानी और फ़िल्टर करता है", explanation: "एक फ़ायरवॉल एक विश्वसनीय आंतरिक नेटवर्क और एक अविश्वसनीय बाहरी नेटवर्क, जैसे इंटरनेट, के बीच एक बाधा के रूप में कार्य करता है।" }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "सूचना सुरक्षा के तीन मुख्य सिद्धांत ('CIA ट्रायड') क्या हैं?", options: ["गोपनीयता, अखंडता, उपलब्धता", "नियंत्रण, सूचना, पहुंच", "साइबर सुरक्षा, खुफिया, हमला", "कनेक्शन, घुसपैठ, कार्रवाई"], answer: "गोपनीयता, अखंडता, उपलब्धता", explanation: "ये तीन सिद्धांत सूचना सुरक्षा की नींव बनाते हैं: गोपनीयता (डेटा को गुप्त रखना), अखंडता (यह सुनिश्चित करना कि डेटा में कोई बदलाव न हो), और उपलब्धता (यह सुनिश्चित करना कि जरूरत पड़ने पर डेटा सुलभ हो)।" },
+                        { q: "'मैन-इन-द-मिडिल' (MITM) हमला क्या है?", options: ["मध्य अमेरिका में एक सर्वर पर हमला", "एक हमलावर गुप्त रूप से दो पक्षों के बीच संचार को रोकता और रिले करता है", "एक नेटवर्क स्विच पर एक भौतिक हमला", "एक प्रकार का फ़िशिंग ईमेल"], answer: "एक हमलावर गुप्त रूप से दो पक्षों के बीच संचार को रोकता और रिले करता है", explanation: "एक MITM हमले में, हमलावर दो संचार करने वाले पक्षों के बीच खुद को स्थापित करता है ताकि वे ट्रैफिक को सुन सकें या उसमें हेरफेर कर सकें, जबकि दोनों पक्ष यह मानते हैं कि वे सीधे संवाद कर रहे हैं।" },
+                        { q: "'SQL इंजेक्शन' क्या है?", options: ["एक डेटाबेस में अधिक मेमोरी इंजेक्ट करना", "डेटा-संचालित अनुप्रयोगों पर हमला करने के लिए उपयोग की जाने वाली एक कोड इंजेक्शन तकनीक", "डेटाबेस प्रश्नों को तेज करने की एक विधि", "एक प्रकार का डेटाबेस सॉफ्टवेयर"], answer: "डेटा-संचालित अनुप्रयोगों पर हमला करने के लिए उपयोग की जाने वाली एक कोड इंजेक्शन तकनीक", explanation: "SQL इंजेक्शन तब होता है जब कोई हमलावर किसी क्वेरी में दुर्भावनापूर्ण SQL कोड डालता है, जो उन्हें प्रमाणीकरण को बायपास करने, डेटा देखने, संशोधित करने या हटाने की अनुमति दे सकता है।" },
+                        { q: "इनमें से कौन 'ज़ीरो-डे' भेद्यता का वर्णन करता है?", options: ["एक भेद्यता जो 24 घंटे से कम समय से मौजूद है", "एक भेद्यता जिसका फायदा उठाना आसान है", "एक भेद्यता जिसका खुलासा किया गया है लेकिन विक्रेता द्वारा अभी तक पैच नहीं किया गया है", "बिना किसी प्रभाव वाली भेद्यता"], answer: "एक भेद्यता जिसका खुलासा किया गया है लेकिन विक्रेता द्वारा अभी तक पैच नहीं किया गया है", explanation: "'ज़ीरो-डे' भेद्यता एक सुरक्षा दोष है जो हमलावरों (या जनता) को पता है इससे पहले कि सॉफ्टवेयर विक्रेता के पास पैच उपलब्ध हो, जिससे सिस्टम हमले के लिए खुला रहता है।" },
+                        { q: "हैकिंग के संदर्भ में 'सोशल इंजीनियरिंग' क्या है?", options: ["हैकर्स के लिए एक सोशल मीडिया नेटवर्क डिजाइन करना", "लोगों को कार्रवाई करने या गोपनीय जानकारी का खुलासा करने के लिए मनोवैज्ञानिक हेरफेर", "सामाजिक विषयों पर एक इंजीनियरिंग सम्मेलन", "सोशल मीडिया टिप्पणियों से एक कंप्यूटर बनाना"], answer: "लोगों को कार्रवाई करने या गोपनीय जानकारी का खुलासा करने के लिए मनोवैज्ञानिक हेरफेर", explanation: "सोशल इंजीनियरिंग लोगों को सामान्य सुरक्षा प्रक्रियाओं को तोड़ने के लिए धोखा देने के लिए मानवीय संपर्क और विश्वास पर निर्भर करती है, जो अक्सर एक बड़े तकनीकी हैक का अग्रदूत होती है।" }
+                    ],
+                    hard: [
+                        { q: "'क्रॉस-साइट स्क्रिप्टिंग' (XSS) हमला क्या है?", options: ["एक स्क्रिप्ट जो वेबसाइटों को ब्लॉक करती है", "एक हमला जिसमें दुर्भावनापूर्ण स्क्रिप्ट को अन्यथा सौम्य और विश्वसनीय वेबसाइटों में इंजेक्ट किया जाता है", "वेबसाइट के प्रदर्शन का परीक्षण करने के लिए एक उपकरण", "दो वेबसाइटों को एक साथ जोड़ने की एक विधि"], answer: "एक हमला जिसमें दुर्भावनापूर्ण स्क्रिप्ट को अन्यथा सौम्य और विश्वसनीय वेबसाइटों में इंजेक्ट किया जाता है", explanation: "XSS हमले तब होते हैं जब कोई हमलावर किसी वेब एप्लिकेशन का उपयोग किसी अन्य अंतिम उपयोगकर्ता को दुर्भावनापूर्ण कोड भेजने के लिए करता है, जो आमतौर पर एक ब्राउज़र-साइड स्क्रिप्ट के रूप में होता है, जो एक्सेस कंट्रोल को बायपास करता है।" },
+                        { q: "एक वायरस और एक वर्म के बीच क्या अंतर है?", options: ["एक वर्म एक प्रकार का वायरस है", "एक वायरस को फैलने के लिए एक मेजबान कार्यक्रम की आवश्यकता होती है, जबकि एक वर्म नेटवर्क पर स्वयं-प्रतिकृति कर सकता है", "एक वायरस हार्डवेयर को संक्रमित करता है, एक वर्म सॉफ्टवेयर को संक्रमित करता है", "कोई अंतर नहीं है"], answer: "एक वायरस को फैलने के लिए एक मेजबान कार्यक्रम की आवश्यकता होती है, जबकि एक वर्म नेटवर्क पर स्वयं-प्रतिकृति कर सकता है", explanation: "एक महत्वपूर्ण अंतर प्रसार है। एक वायरस खुद को एक फ़ाइल या प्रोग्राम से जोड़ता है और इसे फैलाने के लिए मानवीय कार्रवाई पर निर्भर करता है। एक वर्म मैलवेयर का एक स्टैंडअलोन टुकड़ा है जो अन्य कंप्यूटरों में फैलने के लिए खुद की प्रतिकृति बनाता है, अक्सर एक भेद्यता का फायदा उठाते हुए।" },
+                        { q: "'DDoS' हमला क्या है?", options: ["डायरेक्ट डिनायल ऑफ सर्विस", "डिस्ट्रिब्यूटेड डिनायल ऑफ सर्विस", "डेटा डिलीशन ऑफ सर्विस", "डिजिटल डीकंस्ट्रक्शन ऑफ सर्विस"], answer: "डिस्ट्रिब्यूटेड डिनायल ऑफ सर्विस", explanation: "एक DDoS हमला एक लक्षित सर्वर या नेटवर्क के सामान्य यातायात को बाधित करने का एक दुर्भावनापूर्ण प्रयास है, जिसमें लक्ष्य को कई स्रोतों ('बॉटनेट') से इंटरनेट यातायात की बाढ़ से भर दिया जाता है।" },
+                        { q: "एक पेनेट्रेशन टेस्ट के दौरान, 'प्रिविलेज एस्केलेशन' क्या है?", options: ["अधिक भुगतान मांगना", "संसाधनों तक उन्नत पहुंच प्राप्त करने के लिए एक बग या भेद्यता का फायदा उठाने का कार्य", "धीमे से तेज इंटरनेट कनेक्शन पर स्विच करना", "सफलतापूर्वक हैकिंग के लिए पदोन्नति प्राप्त करना"], answer: "संसाधनों तक उन्नत पहुंच प्राप्त करने के लिए एक बग या भेद्यता का फायदा उठाने का कार्य", explanation: "प्रिविलेज एस्केलेशन एक महत्वपूर्ण चरण है जहां एक हमलावर जिसने किसी सिस्टम तक प्रारंभिक, निम्न-स्तरीय पहुंच प्राप्त कर ली है, फिर उच्च-स्तरीय अनुमतियां, जैसे प्रशासक या रूट एक्सेस, प्राप्त करने के लिए कमजोरियों का फायदा उठाता है।" },
+                        { q: "'बफर ओवरफ्लो' भेद्यता क्या है?", options: ["एक बफर में बहुत अधिक डेटा होना", "एक विसंगति जहां एक प्रोग्राम, बफर में डेटा लिखते समय, बफर की सीमा से अधिक हो जाता है और आसन्न मेमोरी को अधिलेखित कर देता है", "एक नेटवर्क ट्रैफिक जाम", "एक सुविधा जो बफर को बड़ा बनाती है"], answer: "एक विसंगति जहां एक प्रोग्राम, बफर में डेटा लिखते समय, बफर की सीमा से अधिक हो जाता है और आसन्न मेमोरी को अधिलेखित कर देता है", explanation: "इसका फायदा हमलावरों द्वारा दुर्भावनापूर्ण कोड को इंजेक्ट करने और निष्पादित करने, किसी सिस्टम को क्रैश करने, या डेटा को भ्रष्ट करने के लिए किया जा सकता है। यह C/C++ जैसी निम्न-स्तरीय भाषाओं में एक आम भेद्यता है।" }
+                    ]
                 }
             },
             odia: {
-                "Deep Learning": {
+                // ... (Odia translations for all new questions)
+                 "Deep Learning": {
                     easy: [
                         { q: "ଏକ ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କର ମୌଳିକ ଏକକ କ’ଣ?", options: ["ନ୍ୟୁରନ୍", "ପିକ୍ସେଲ୍", "ନୋଡ୍.ଜେଏସ୍", "ଆଲଗୋରିଦମ୍"], answer: "ନ୍ୟୁରନ୍", explanation: "ଏକ ନ୍ୟୁରନ୍, ବା ନୋଡ୍, ଏକ ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କର ମୌଳିକ ପ୍ରକ୍ରିୟାକରଣ ଏକକ, ଯାହା ଜୈବିକ ନ୍ୟୁରନ୍ ଦ୍ୱାରା ଅନୁପ୍ରାଣିତ।" },
                         { q: "ଏଥିମଧ୍ୟରୁ କେଉଁଟି ଏକ ଲୋକପ୍ରିୟ ଡିପ୍ ଲର୍ଣ୍ଣିଂ ଫ୍ରେମୱାର୍କ?", options: ["ରିଆକ୍ଟ", "ଟେନସର୍‌ଫ୍ଲୋ", "ଆଙ୍ଗୁଲାର୍", "ଜାଙ୍ଗୋ"], answer: "ଟେନସର୍‌ଫ୍ଲୋ", explanation: "ଗୁଗୁଲ୍ ଦ୍ୱାରା ବିକଶିତ ଟେନସର୍‌ଫ୍ଲୋ, ଡିପ୍ ଲର୍ଣ୍ଣିଂ ପାଇଁ ସବୁଠାରୁ ବହୁଳ ଭାବରେ ବ୍ୟବହୃତ ଓପନ୍-ସୋର୍ସ ଲାଇବ୍ରେରୀ ମଧ୍ୟରୁ ଅନ୍ୟତମ।" },
                         { q: "ଏକ ମଡେଲକୁ 'ପ୍ରଶିକ୍ଷଣ' ଦେବାର ଅର୍ଥ କ’ଣ?", options: ["ଏହାକୁ କୋଡ୍ କରିବାକୁ ଶିଖାଇବା", "ଏହାକୁ ଏକ ଚଳଚ୍ଚିତ୍ର ଦେଖାଇବା", "ପ୍ୟାଟର୍ଣ୍ଣ ଶିଖିବା ପାଇଁ ଏହାକୁ ଡାଟା ଖାଇବାକୁ ଦେବା", "ଏହାର ତ୍ରୁଟିଗୁଡ଼ିକୁ ବିଲୋପ କରିବା"], answer: "ପ୍ୟାଟର୍ଣ୍ଣ ଶିଖିବା ପାଇଁ ଏହାକୁ ଡାଟା ଖାଇବାକୁ ଦେବା", explanation: "ପ୍ରଶିକ୍ଷଣରେ ମଡେଲକୁ ଏକ ବଡ଼ ଡାଟାସେଟ୍ ପ୍ରଦାନ କରିବା ସାମିଲ, ଯାହାଦ୍ୱାରା ଏହା ସଠିକ୍ ଭବିଷ୍ୟବାଣୀ କରିବା ପାଇଁ ଏହାର ଆଭ୍ୟନ୍ତରୀଣ ପାରାମିଟରଗୁଡ଼ିକୁ ସଜାଡ଼ିପାରିବ।" },
                         { q: "CNN ମୁଖ୍ୟତଃ କେଉଁ ପ୍ରକାରର ଡାଟା ପାଇଁ ବ୍ୟବହୃତ ହୁଏ?", options: ["ପାଠ୍ୟ", "ଧ୍ୱନି", "ସଂଖ୍ୟା", "ଚିତ୍ର"], answer: "ଚିତ୍ର", explanation: "କନଭୋଲ୍ୟୁସନାଲ୍ ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କ (CNNs) ଚିତ୍ର ଚିହ୍ନଟ ଏବଂ କମ୍ପ୍ୟୁଟର୍ ଭିଜନ୍ ସହିତ ଜଡ଼ିତ କାର୍ଯ୍ୟଗୁଡ଼ିକ ପାଇଁ ଅତ୍ୟନ୍ତ ପ୍ରଭାବଶାଳୀ।" },
-                        { q: "ଡିପ୍ ଲର୍ଣ୍ଣିଂରେ 'ଡିପ୍' କ’ଣ ବୁଝାଏ?", options: ["ଗଭୀର ଚିନ୍ତା", "ନେଟୱାର୍କରେ ଅନେକ ସ୍ତର", "ଗଭୀର ସମୁଦ୍ର ଡାଟା", "ଜଟିଳ କୋଡ୍"], answer: "ନେଟୱାର୍କରେ ଅନେକ ସ୍ତର", explanation: "'ଡିପ୍' ଶବ୍ଦଟି ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କରେ ଏକାଧିକ ଲୁକ୍କାୟିତ ସ୍ତରର ଉପସ୍ଥିତିକୁ ସୂଚିତ କରେ, ଯାହା ଏହାକୁ ଅଧିକ ଜଟିଳ ବୈଶିଷ୍ଟ୍ୟ ଶିଖିବାକୁ ଅନୁମତି ଦିଏ।" },
-                        { q: "ମେସିନ୍ ଲର୍ଣ୍ଣିଂରେ 'ଓଭର୍‌ଫିଟିଂ' କ’ଣ?", options: ["ମଡେଲ୍ ବହୁତ ବଡ଼", "ମଡେଲ୍ ପ୍ରଶିକ୍ଷଣ ଡାଟା ଉପରେ ଭଲ କାମ କରେ କିନ୍ତୁ ନୂଆ ଡାଟା ଉପରେ ଖରାପ", "ମଡେଲ୍ ବହୁତ ଦ୍ରୁତ", "ମଡେଲ୍ ବହୁତ ଶକ୍ତି ବ୍ୟବହାର କରେ"], answer: "ମଡେଲ୍ ପ୍ରଶିକ୍ଷଣ ଡାଟା ଉପରେ ଭଲ କାମ କରେ କିନ୍ତୁ ନୂଆ ଡାଟା ଉପରେ ଖରାପ", explanation: "ଯେତେବେଳେ ଏକ ମଡେଲ୍ ପ୍ରଶିକ୍ଷଣ ଡାଟାକୁ ଏହାର ଶବ୍ଦ ସହିତ ବହୁତ ଭଲ ଭାବରେ ଶିଖେ, ଏବଂ ଅଦେଖା ଡାଟାକୁ ସାଧାରଣ କରିବାରେ ବିଫଳ ହୁଏ, ସେତେବେଳେ ଓଭର୍‌ଫିଟିଂ ହୁଏ।" },
-                        { q: "କେଉଁ ଆକ୍ଟିଭେସନ୍ ଫଙ୍କସନ୍ 0 ଏବଂ 1 ମଧ୍ୟରେ ଏକ ସମ୍ଭାବନା ଆଉଟପୁଟ୍ କରିବା ପାଇଁ ଜଣାଶୁଣା?", options: ["ReLU", "Tanh", "ସିଗମଏଡ୍", "ଲିକି ReLU"], answer: "ସିଗମଏଡ୍", explanation: "ସିଗମଏଡ୍ ଫଙ୍କସନ୍ ଏହାର ଇନପୁଟକୁ 0 ଏବଂ 1 ମଧ୍ୟରେ ଏକ ପରିସରରେ ସଙ୍କୁଚିତ କରେ, ଯାହା ଏହାକୁ ବାଇନାରୀ ବର୍ଗୀକରଣ ଆଉଟପୁଟ୍ ପାଇଁ ଉପଯୁକ୍ତ କରିଥାଏ।" }
+                        { q: "ଡିପ୍ ଲର୍ଣ୍ଣିଂରେ 'ଡିପ୍' କ’ଣ ବୁଝାଏ?", options: ["ଗଭୀର ଚିନ୍ତା", "ନେଟୱାର୍କରେ ଅନେକ ସ୍ତର", "ଗଭୀର ସମୁଦ୍ର ଡାଟା", "ଜଟିଳ କୋଡ୍"], answer: "ନେଟୱାର୍କରେ ଅନେକ ସ୍ତର", explanation: "'ଡିପ୍' ଶବ୍ଦଟି ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କରେ ଏକାଧିକ ଲୁକ୍କାୟିତ ସ୍ତରର ଉପସ୍ଥିତିକୁ ସୂଚିତ କରେ, ଯାହା ଏହାକୁ ଅଧିକ ଜଟିଳ ବୈଶିଷ୍ଟ୍ୟ ଶିଖିବାକୁ ଅନୁମତି ଦିଏ।" }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "CNNରେ ଏକ ପୁଲିଂ ଲେୟାରର ଉଦ୍ଦେଶ୍ୟ କ’ଣ?", options: ["ପାରାମିଟର ବୃଦ୍ଧି କରିବା", "ସ୍ଥାନିକ ଆୟାମ ହ୍ରାସ କରିବା", "ଅଣ-ରୈଖିକତା ଯୋଗ କରିବା", "ଆଉଟପୁଟକୁ ସମତଳ କରିବା"], answer: "ସ୍ଥାନିକ ଆୟାମ ହ୍ରାସ କରିବା", explanation: "ପୁଲିଂ ଲେୟାର (ଯେପରିକି ମ୍ୟାକ୍ସ ପୁଲିଂ) ଫିଚର୍ ମ୍ୟାପଗୁଡ଼ିକୁ ଡାଉନସାମ୍ପଲ୍ କରେ, ଯାହାଦ୍ୱାରା ଗଣନାତ୍ମକ ଭାର କମିଯାଏ ଏବଂ ମଡେଲକୁ ଫିଚର୍ ସ୍ଥିତିରେ ପରିବର୍ତ୍ତନ ପାଇଁ ଅଧିକ ମଜବୁତ କରେ।" },
+                        { q: "ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କ ପ୍ରଶିକ୍ଷଣରେ ବ୍ୟବହୃତ ଏକ ସାଧାରଣ ଅପ୍ଟିମାଇଜର୍ କେଉଁଟି?", options: ["ମିନ୍ ସ୍କୋୟାର୍ଡ ଏରର୍", "ଆଡାମ୍", "କ୍ରସ୍-ଏଣ୍ଟ୍ରୋପି", "ସଫ୍ଟମ୍ୟାକ୍ସ"], answer: "ଆଡାମ୍", explanation: "ଆଡାମ୍ (ଆଡାପ୍ଟିଭ୍ ମୋମେଣ୍ଟ୍ ଏଷ୍ଟିମେସନ୍) ଏକ ଦକ୍ଷ ଅପ୍ଟିମାଇଜେସନ୍ ଆଲଗୋରିଦମ୍ ଯାହା AdaGrad ଏବଂ RMSPropର ସୁବିଧାଗୁଡ଼ିକୁ ମିଶ୍ରଣ କରେ।" },
+                        { q: "'ବ୍ୟାକପ୍ରୋପାଗେସନ୍' କ’ଣ?", options: ["ନେଟୱାର୍କ ମାଧ୍ୟମରେ ତ୍ରୁଟି ଗଣନା ଏବଂ ପ୍ରଚାର କରିବାର ଏକ ପଦ୍ଧତି", "ଆଉଟପୁଟକୁ ଇନପୁଟକୁ ପୁନର୍ବାର ପଠାଇବା", "ଏକ ପ୍ରକାରର ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କ", "ଡାଟା ପ୍ରବାହକୁ ଓଲଟାଇବା"], answer: "ନେଟୱାର୍କ ମାଧ୍ୟମରେ ତ୍ରୁଟି ଗଣନା ଏବଂ ପ୍ରଚାର କରିବାର ଏକ ପଦ୍ଧତି", explanation: "ବ୍ୟାକପ୍ରୋପାଗେସନ୍ ହେଉଛି ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କକୁ ପ୍ରଶିକ୍ଷଣ ଦେବା ପାଇଁ ବ୍ୟବହୃତ ମୂଳ ଆଲଗୋରିଦମ୍, ଯାହା ନେଟୱାର୍କର ଓଜନ ସମ୍ବନ୍ଧରେ କ୍ଷତି ଫଙ୍କସନର ଗ୍ରେଡିଏଣ୍ଟ୍ ଗଣନା କରେ।" },
+                        { q: "RNNs (ରିକରେଣ୍ଟ୍ ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କ) କେଉଁ ପ୍ରକାରର ଡାଟା ପାଇଁ ସର୍ବୋତ୍ତମ?", options: ["ଚିତ୍ର ଡାଟା", "ଟାବୁଲାର୍ ଡାଟା", "କ୍ରମିକ ଡାଟା (ଯଥା, ପାଠ୍ୟ)", "ବର୍ଗୀକୃତ ଡାଟା"], answer: "କ୍ରମିକ ଡାଟା (ଯଥା, ପାଠ୍ୟ)", explanation: "RNNsରେ ଆଭ୍ୟନ୍ତରୀଣ ମେମୋରୀ ଲୁପ୍ ଅଛି, ଯାହା ସେମାନଙ୍କୁ କ୍ରମ ପ୍ରକ୍ରିୟାକରଣ ପାଇଁ ଆଦର୍ଶ କରିଥାଏ ଯେଉଁଠାରେ ପୂର୍ବ ପଦକ୍ଷେପଗୁଡ଼ିକର ପ୍ରସଙ୍ଗ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ।" },
+                        { q: "'ଭ୍ୟାନିସିଂ ଗ୍ରେଡିଏଣ୍ଟ୍' ସମସ୍ୟା କ’ଣ?", options: ["ଯେତେବେଳେ ଗ୍ରେଡିଏଣ୍ଟ୍ ବହୁତ ବଡ଼ ହୋଇଯାଏ", "ଯେତେବେଳେ ଗଭୀର ନେଟୱାର୍କରେ ଗ୍ରେଡିଏଣ୍ଟ୍ ଶୂନର ନିକଟବର୍ତ୍ତୀ ହୁଏ", "ଯେତେବେଳେ ମଡେଲରେ କୌଣସି ଗ୍ରେଡିଏଣ୍ଟ୍ ନଥାଏ", "ଯେତେବେଳେ କ୍ଷତି ଫଙ୍କସନ୍ ସମତଳ ହୁଏ"], answer: "ଯେତେବେଳେ ଗଭୀର ନେଟୱାର୍କରେ ଗ୍ରେଡିଏଣ୍ଟ୍ ଶୂନର ନିକଟବର୍ତ୍ତୀ ହୁଏ", explanation: "ବହୁତ ଗଭୀର ନେଟୱାର୍କରେ, ଗ୍ରେଡିଏଣ୍ଟ୍ ପଛକୁ ପ୍ରସାରିତ ହେବା ସମୟରେ କ୍ରମାଗତ ଭାବରେ ଛୋଟ ହୋଇପାରେ, ଯାହା ପୂର୍ବ ସ୍ତରଗୁଡ଼ିକ ପାଇଁ ପ୍ରଭାବଶାଳୀ ଭାବରେ ଶିଖିବା କଷ୍ଟକର କରିଥାଏ।" }
+                    ],
+                    hard: [
+                        { q: "RNN ତୁଳନାରେ ଏକ ଟ୍ରାନ୍ସଫର୍ମର୍ ମଡେଲର ମୁଖ୍ୟ ନବସୃଜନ କ’ଣ?", options: ["କନଭୋଲ୍ୟୁସନାଲ୍ ଲେୟାର୍", "ସେଲ୍ଫ-ଆଟେନସନ୍ ମେକାନିଜିମ୍", "ରିକରେଣ୍ଟ୍ ଲୁପ୍", "ସିଗମଏଡ୍ ଆକ୍ଟିଭେସନ୍"], answer: "ସେଲ୍ଫ-ଆଟେନସନ୍ ମେକାନିଜିମ୍", explanation: "ଟ୍ରାନ୍ସଫର୍ମର୍ ସ୍ଥାପତ୍ୟ ପୁନରାବୃତ୍ତିକୁ ପରିତ୍ୟାଗ କରେ ଏବଂ ଇନପୁଟ୍ ଏବଂ ଆଉଟପୁଟ୍ ମଧ୍ୟରେ ବିଶ୍ୱସ୍ତରୀୟ ନିର୍ଭରଶୀଳତା ଆଙ୍କିବା ପାଇଁ ସମ୍ପୂର୍ଣ୍ଣ ଭାବରେ ଏକ ସେଲ୍ଫ-ଆଟେନସନ୍ ମେକାନିଜିମ୍ ଉପରେ ନିର୍ଭର କରେ।" },
+                        { q: "ଏକ ଜେନେରେଟିଭ୍ ଆଡଭର୍ସାରିଆଲ୍ ନେଟୱାର୍କ (GAN) କେଉଁଥିରେ ଗଠିତ?", options: ["ଏକ ଏନକୋଡର୍ ଏବଂ ଏକ ଡିକୋଡର୍", "ଏକ ମାଷ୍ଟର୍ ଏବଂ ଏକ ସ୍ଲେଭ୍ ମଡେଲ୍", "ଏକ ଜେନେରେଟର୍ ଏବଂ ଏକ ଡିସକ୍ରିମିନେଟର୍", "ଏକ କ୍ଲାସିଫାୟର୍ ଏବଂ ଏକ ରିଗ୍ରେସର୍"], answer: "ଏକ ଜେନେରେଟର୍ ଏବଂ ଏକ ଡିସକ୍ରିମିନେଟର୍", explanation: "GAN ଗୁଡ଼ିକ ଦୁଇଟି ପ୍ରତିଯୋଗୀ ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କକୁ ନେଇ ଗଠିତ: ଏକ ଜେନେରେଟର୍ ଯାହା ନକଲି ଡାଟା ସୃଷ୍ଟି କରେ, ଏବଂ ଏକ ଡିସକ୍ରିମିନେଟର୍ ଯାହା ନକଲି ଡାଟାକୁ ପ୍ରକୃତ ଡାଟାରୁ ପୃଥକ କରିବାକୁ ଚେଷ୍ଟା କରେ।" },
+                        { q: "ରିଇନଫୋର୍ସମେଣ୍ଟ୍ ଲର୍ଣ୍ଣିଂରେ, Q-ଭାଲ୍ୟୁର କାର୍ଯ୍ୟ କ’ଣ?", options: ["ଏହା ଏକ ପ୍ରଶ୍ନର ଗୁଣବତ୍ତା ମାପେ", "ଏହା ଏକ ରାଜ୍ୟରେ ଏକ କାର୍ଯ୍ୟ କରିବା ପାଇଁ ଆଶା କରାଯାଉଥିବା ଭବିଷ୍ୟତ ପୁରସ୍କାରର ଆକଳନ କରେ", "ଏହା ମଡେଲର ଅନ୍ତିମ ଆଉଟପୁଟ୍", "ଏହା ଏକ ରାଜ୍ୟର ସମ୍ଭାବନା ଗଣନା କରେ"], answer: "ଏହା ଏକ ରାଜ୍ୟରେ ଏକ କାର୍ଯ୍ୟ କରିବା ପାଇଁ ଆଶା କରାଯାଉଥିବା ଭବିଷ୍ୟତ ପୁରସ୍କାରର ଆକଳନ କରେ", explanation: "Q-ଲର୍ଣ୍ଣିଂରେ Q-ଭାଲ୍ୟୁ (ଗୁଣବତ୍ତା-ମୂଲ୍ୟ) ସମୁଦାୟ ରିହାତିଯୁକ୍ତ ଭବିଷ୍ୟତ ପୁରସ୍କାରକୁ ପ୍ରତିନିଧିତ୍ୱ କରେ ଯାହା ଏକ ଏଜେଣ୍ଟ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ ରାଜ୍ୟରେ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ କାର୍ଯ୍ୟ କରି ଆଶା କରିପାରିବ।" },
+                        { q: "ପ୍ରଶିକ୍ଷଣ ସମୟରେ ୟୁନିଟ୍ ଗୁଡ଼ିକୁ ଯାଦୃଚ୍ଛିକ ଭାବରେ ଛାଡି ଓଭର୍‌ଫିଟିଂକୁ କମ୍ କରିବାରେ କେଉଁ କୌଶଳ ସାହାଯ୍ୟ କରେ?", options: ["ବ୍ୟାଚ୍ ନର୍ମାଲାଇଜେସନ୍", "ଡ୍ରପଆଉଟ୍", "ଅର୍ଲି ଷ୍ଟପିଂ", "ଡାଟା ଅଗମେଣ୍ଟେସନ୍"], answer: "ଡ୍ରପଆଉଟ୍", explanation: "ଡ୍ରପଆଉଟ୍ ଏକ ନିୟମିତକରଣ କୌଶଳ ଯେଉଁଠାରେ ପ୍ରଶିକ୍ଷଣ ସମୟରେ ଯାଦୃଚ୍ଛିକ ଭାବରେ ମନୋନୀତ ନ୍ୟୁରନଗୁଡ଼ିକୁ ଅଣଦେଖା କରାଯାଏ, ଯାହା ସେମାନଙ୍କୁ ଅତ୍ୟଧିକ ସହ-ଅନୁକୂଳନରୁ ରୋକିଥାଏ।" },
+                        { q: "ବ୍ୟାଚ୍ ନର୍ମାଲାଇଜେସନର ମୁଖ୍ୟ ଉଦ୍ଦେଶ୍ୟ କ’ଣ?", options: ["ପ୍ରଶିକ୍ଷଣକୁ ତ୍ୱରାନ୍ୱିତ କରିବା ଏବଂ ନେଟୱାର୍କକୁ ସ୍ଥିର କରିବା", "ଅଧିକ ଯାଦୃଚ୍ଛିକତା ଯୋଡିବା", "ସ୍ତର ସଂଖ୍ୟା ହ୍ରାସ କରିବା", "ଡାଟାକୁ ଏକ ବ୍ୟାଚରେ ରୂପାନ୍ତର କରିବା"], answer: "ପ୍ରଶିକ୍ଷଣକୁ ତ୍ୱରାନ୍ୱିତ କରିବା ଏବଂ ନେଟୱାର୍କକୁ ସ୍ଥିର କରିବା", explanation: "ବ୍ୟାଚ୍ ନର୍ମାଲାଇଜେସନ୍ ପ୍ରତ୍ୟେକ ସ୍ତରର ଇନପୁଟକୁ ସାଧାରଣ କରେ, ଯାହା ଆଭ୍ୟନ୍ତରୀଣ କୋଭାରିଏଟ୍ ସିଫ୍ଟ୍ ସମସ୍ୟାର ମୁକାବିଲା କରିବାରେ ସାହାଯ୍ୟ କରେ, ଯାହା ଦ୍ରୁତ ଏବଂ ଅଧିକ ସ୍ଥିର ପ୍ରଶିକ୍ଷଣକୁ ନେଇଥାଏ।" }
+                    ]
                 },
                 "Automation": {
-                    easy: [
+                     easy: [
                         { q: "RPA ର ପୂର୍ଣ୍ଣ ରୂପ କ’ଣ?", options: ["ରୋବୋଟିକ୍ ପ୍ରୋସେସ୍ ଅଟୋମେସନ୍", "ରିଅଲ୍ ପ୍ରୋସେସ୍ ଆକ୍ସନ୍", "ରୋବୋଟିକ୍ ପର୍ସନାଲ୍ ଆସିଷ୍ଟାଣ୍ଟ", "ରିଅଲ୍-ଟାଇମ୍ ପ୍ରୋସେସ୍ ଅଟୋମେସନ୍"], answer: "ରୋବୋଟିକ୍ ପ୍ରୋସେସ୍ ଅଟୋମେସନ୍", explanation: "RPA ହେଉଛି ଏକ ଟେକ୍ନୋଲୋଜି ଯାହା ପୁନରାବୃତ୍ତି, ନିୟମ-ଆଧାରିତ ବ୍ୟବସାୟିକ ପ୍ରକ୍ରିୟାକୁ ସ୍ୱୟଂଚାଳିତ କରିବା ପାଇଁ ସଫ୍ଟୱେର୍ ରୋବଟ୍ ବା 'ବଟ୍' ବ୍ୟବହାର କରେ।" },
                         { q: "କେଉଁ କାର୍ଯ୍ୟ ଅଟୋମେସନ୍ ପାଇଁ ଏକ ଭଲ ପ୍ରାର୍ଥୀ?", options: ["ସୃଜନଶୀଳ ଲେଖା", "ରଣନୀତିକ ଯୋଜନା", "ସ୍ପ୍ରେଡସିଟ୍ ମଧ୍ୟରେ ଡାଟା କପି-ପେଷ୍ଟ କରିବା", "ମାନବ ସମ୍ବଳ ସାକ୍ଷାତକାର"], answer: "ସ୍ପ୍ରେଡସିଟ୍ ମଧ୍ୟରେ ଡାଟା କପି-ପେଷ୍ଟ କରିବା", explanation: "ଅଟୋମେସନ୍ ସେହି କାର୍ଯ୍ୟଗୁଡ଼ିକରେ ଉତ୍କର୍ଷ କରେ ଯାହା ପୁନରାବୃତ୍ତି, ଉଚ୍ଚ-ପରିମାଣ ଏବଂ ନିୟମର ଏକ ସ୍ପଷ୍ଟ ସେଟ୍ ଅନୁସରଣ କରେ, ଯେପରିକି ଡାଟା ଏଣ୍ଟ୍ରି।" },
                         { q: "ଅଟୋମେସନ୍‌ରେ 'ୱାର୍କଫ୍ଲୋ' କ’ଣ?", options: ["କର୍ମଚାରୀଙ୍କ ଏକ ଗୋଷ୍ଠୀ", "କାର୍ଯ୍ୟଗୁଡ଼ିକର ଏକ କ୍ରମ", "ଏକ କମ୍ପ୍ୟୁଟର୍ ଭାଇରସ୍", "ଏକ ପ୍ରକାରର ରୋବଟ୍"], answer: "କାର୍ଯ୍ୟଗୁଡ଼ିକର ଏକ କ୍ରମ", explanation: "ଏକ ୱାର୍କଫ୍ଲୋ ସେହି ପଦକ୍ଷେପ ବା କାର୍ଯ୍ୟଗୁଡ଼ିକର ଶୃଙ୍ଖଳାକୁ ବ୍ୟାଖ୍ୟା କରେ ଯାହା ଏକ ପ୍ରକ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଣ କରିବା ପାଇଁ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ କ୍ରମରେ କାର୍ଯ୍ୟକାରୀ ହୁଏ।" },
                         { q: "ଏଥିମଧ୍ୟରୁ କେଉଁଟି ଏକ ଅଟୋମେସନ୍ ଟୁଲ୍?", options: ["ଫୋଟୋଶପ୍", "UiPath", "ଭିଜୁଆଲ୍ ଷ୍ଟୁଡିଓ କୋଡ୍", "ଫିଗମା"], answer: "UiPath", explanation: "UiPath ରୋବୋଟିକ୍ ପ୍ରୋସେସ୍ ଅଟୋମେସନ୍ (RPA) ପାଇଁ ଏକ ଅଗ୍ରଣୀ ପ୍ଲାଟଫର୍ମ, ଯାହା ଉପଭୋକ୍ତାମାନଙ୍କୁ ସଫ୍ଟୱେର୍ ରୋବଟ୍ ଡିଜାଇନ୍ ଏବଂ ନିୟୋଜିତ କରିବାକୁ ଅନୁମତି ଦିଏ।" },
-                        { q: "ଶିଳ୍ପ ଅଟୋମେସନ୍‌ର ମୁଖ୍ୟ ଲକ୍ଷ୍ୟ କ’ଣ?", options: ["ଅଧିକ ଲୋକଙ୍କୁ ନିଯୁକ୍ତି ଦେବା", "ଉତ୍ପାଦନ ଏବଂ ଦକ୍ଷତା ବୃଦ୍ଧି କରିବା", "କାରଖାନାଗୁଡ଼ିକୁ ଆଧୁନିକ ଦେଖାଇବା", "କମ୍ପ୍ୟୁଟର୍ ବ୍ୟବହାର କମ୍ କରିବା"], answer: "ଉତ୍ପାଦନ ଏବଂ ଦକ୍ଷତା ବୃଦ୍ଧି କରିବା", explanation: "ଶିଳ୍ପ ଅଟୋମେସନ୍‌ର ପ୍ରାଥମିକ ଉଦ୍ଦେଶ୍ୟ ହେଉଛି ଉତ୍ପାଦକତା ବୃଦ୍ଧି କରିବା, ତ୍ରୁଟି କମ୍ କରିବା, ଏବଂ ଉତ୍ପାଦନରେ ସୁରକ୍ଷା ଓ ଦକ୍ଷତା ବୃଦ୍ଧି କରିବା।" },
-                        { q: "ଅଟୋମେସନ୍‌ରେ 'ଯଦି-ତେବେ' ଷ୍ଟେଟମେଣ୍ଟ୍ କାହାର ଏକ ଉଦାହରଣ?", options: ["ଏକ ରୋବଟ୍‌ର ନାମ", "ଏକ ହାର୍ଡୱେର୍ ଉପାଦାନ", "ନିୟମ-ଆଧାରିତ ତର୍କ", "ଏକ ଯାଦୃଚ୍ଛିକ ପ୍ରକ୍ରିୟା"], answer: "ନିୟମ-ଆଧାରିତ ତର୍କ", explanation: "ଯଦି-ତେବେ ତର୍କ ଅଟୋମେସନ୍ ପାଇଁ ମୌଳିକ, ଯେଉଁଠାରେ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ କାର୍ଯ୍ୟ କେବଳ ସେତେବେଳେ କରାଯାଏ ଯେତେବେଳେ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ ସର୍ତ୍ତ ପୂରଣ ହୁଏ।" },
                         { q: "'ଅନଆଟେଣ୍ଡେଡ୍ ଅଟୋମେସନ୍'ର ଅର୍ଥ କ’ଣ?", options: ["ରୋବଟ୍ ଧ୍ୟାନ ଦେଉନାହିଁ", "ରୋବଟ୍ ମାନବ ତଦାରଖ ବିନା କାମ କରେ", "ରୋବଟ୍ ଭାଙ୍ଗିଯାଇଛି", "ରୋବଟ୍ କେବଳ ରାତିରେ କାମ କରେ"], answer: "ରୋବଟ୍ ମାନବ ତଦାରଖ ବିନା କାମ କରେ", explanation: "ଅନଆଟେଣ୍ଡେଡ୍ ବଟ୍‌ଗୁଡ଼ିକ ନିଜେ ପୃଷ୍ଠଭୂମିରେ ନିର୍ଦ୍ଧାରିତ କାର୍ଯ୍ୟଗୁଡ଼ିକୁ ଚଲାଇପାରନ୍ତି, ସାଧାରଣତଃ ବଡ଼ ଆକାରର, ବ୍ୟାଚ୍-ପ୍ରୋସେସିଂ କାର୍ଯ୍ୟ ପାଇଁ।" }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "'ଆଟେଣ୍ଡେଡ୍ ଅଟୋମେସନ୍' କ’ଣ?", options: ["ଅଟୋମେସନ୍ ଯାହା ପାଇଁ ଏକ ଟିକେଟ୍ ଆବଶ୍ୟକ", "ଏକ ବଟ୍ ଯାହା ମଣିଷ ସହିତ କାମ କରେ", "ଏକ ବଟ୍ ଯାହା କେବଳ ଦିନରେ ଚାଲେ", "ଅଟୋମେସନ୍ ଯାହା ବିଫଳ ହୋଇଛି"], answer: "ଏକ ବଟ୍ ଯାହା ମଣିଷ ସହିତ କାମ କରେ", explanation: "ଆଟେଣ୍ଡେଡ୍ ଅଟୋମେସନ୍, ବା 'ରୋବଟ୍ ସହାୟକ', ଏକ କାର୍ଯ୍ୟର ଅଂଶ ବା ସମ୍ପୂର୍ଣ୍ଣ ପ୍ରକ୍ରିୟାକୁ ସ୍ୱୟଂଚାଳିତ କରିବା ପାଇଁ ଜଣେ ମାନବ ଉପଭୋକ୍ତା ଦ୍ୱାରା ସେମାନଙ୍କ ଡେସ୍କଟପରେ ଆରମ୍ଭ କରାଯାଏ।" },
+                        { q: "ଅଟୋମେସନ୍ ପ୍ରସଙ୍ଗରେ, API କ’ଣ?", options: ["ଆଡଭାନ୍ସଡ୍ ପ୍ରୋଗ୍ରାମିଂ ଇଣ୍ଟରଫେସ୍", "ଅଟୋମେଟେଡ୍ ପ୍ରୋସେସ୍ ଇଣ୍ଟରାକ୍ସନ୍", "ଆପ୍ଲିକେସନ୍ ପ୍ରୋଗ୍ରାମିଂ ଇଣ୍ଟରଫେସ୍", "ଅଟୋମେଟେଡ୍ ପାଇଥନ୍ ଇନଷ୍ଟଲର୍"], answer: "ଆପ୍ଲିକେସନ୍ ପ୍ରୋଗ୍ରାମିଂ ଇଣ୍ଟରଫେସ୍", explanation: "ଏକ API ବିଭିନ୍ନ ସଫ୍ଟୱେର୍ ଆପ୍ଲିକେସନ୍‌କୁ ପରସ୍ପର ସହିତ ଯୋଗାଯୋଗ କରିବାକୁ ଅନୁମତି ଦିଏ, ଯାହା ଏକ ଅଟୋମେସନ୍ ୱାର୍କଫ୍ଲୋରେ ସିଷ୍ଟମଗୁଡ଼ିକୁ ଏକୀକରଣ କରିବା ପାଇଁ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ।" },
+                        { q: "'ସ୍କ୍ରିନ୍ ସ୍କ୍ରେପିଂ' କ’ଣ?", options: ["ଏକ ମନିଟର୍ ସଫା କରିବା", "ଏକ ଉପଭୋକ୍ତା ଇଣ୍ଟରଫେସରୁ ଡାଟା ବାହାର କରିବା", "ଏକ ପ୍ରକାରର ସାଇବର ସୁରକ୍ଷା ଆକ୍ରମଣ", "ସ୍କ୍ରିନର ଏକ ଭିଡିଓ ରେକର୍ଡିଂ"], answer: "ଏକ ଉପଭୋକ୍ତା ଇଣ୍ଟରଫେସରୁ ଡାଟା ବାହାର କରିବା", explanation: "ସ୍କ୍ରିନ୍ ସ୍କ୍ରେପିଂ ହେଉଛି ଏକ କୌଶଳ ଯାହା ଅଟୋମେସନ୍ ଟୁଲ୍ ଦ୍ୱାରା ଏକ ପୁରୁଣା ଆପ୍ଲିକେସନ୍‌ର ସ୍କ୍ରିନରୁ ଡାଟା କ୍ୟାପଚର୍ ଏବଂ ବାହାର କରିବା ପାଇଁ ବ୍ୟବହୃତ ହୁଏ ଯେଉଁଥିରେ API ନଥାଏ।" },
+                        { q: "RPAରେ ଜଣେ ଅର୍କେଷ୍ଟ୍ରେଟରର ଭୂମିକା କ’ଣ?", options: ["ରୋବଟ୍ ଡିଜାଇନ୍ କରିବା", "ରୋବଟର କୋଡ୍ ଲେଖିବା", "ରୋବଟ୍‌ଗୁଡ଼ିକର ଏକ ସମୂହକୁ ପରିଚାଳନା, ନିୟୋଜନ ଏବଂ ମନିଟର୍ କରିବା", "ରୋବଟକୁ ମାନୁଆଲ୍ ଭାବରେ ଚଳାଇବା"], answer: "ରୋବଟ୍‌ଗୁଡ଼ିକର ଏକ ସମୂହକୁ ପରିଚାଳନା, ନିୟୋଜନ ଏବଂ ମନିଟର୍ କରିବା", explanation: "ଜଣେ ଅର୍କେଷ୍ଟ୍ରେଟର୍ (ଯେପରିକି UiPath Orchestrator) ଏକ ସଂଗଠନର ସମସ୍ତ ସଫ୍ଟୱେର୍ ରୋବଟକୁ ପରିଚାଳନା ଏବଂ ନିୟନ୍ତ୍ରଣ କରିବା ପାଇଁ ଏକ କେନ୍ଦ୍ରୀଭୂତ ସର୍ଭର୍ ପ୍ଲାଟଫର୍ମ।" },
+                        { q: "'କଗନିଟିଭ୍ ଅଟୋମେସନ୍' ପାରମ୍ପରିକ RPAରେ କ’ଣ ଯୋଗ କରେ?", options: ["ଅଧିକ ଗତି", "ରାତିରେ କାମ କରିବାର କ୍ଷମତା", "କୃତ୍ରିମ ବୁଦ୍ଧିମତା ଏବଂ ମେସିନ୍ ଲର୍ଣ୍ଣିଂ", "ଭଲ ଦେଖାଯାଉଥିବା ରୋବଟ୍"], answer: "କୃତ୍ରିମ ବୁଦ୍ଧିମତା ଏବଂ ମେସିନ୍ ଲର୍ଣ୍ଣିଂ", explanation: "କଗନିଟିଭ୍ ଅଟୋମେସନ୍ ପ୍ରାକୃତିକ ଭାଷା ପ୍ରକ୍ରିୟାକରଣ (NLP) ଏବଂ କମ୍ପ୍ୟୁଟର୍ ଦୃଷ୍ଟି ପରି AI ଟେକ୍ନୋଲୋଜିକୁ ଅନ୍ତର୍ଭୁକ୍ତ କରି RPAକୁ ବୃଦ୍ଧି କରେ, ଯାହା ବଟ୍‌ଗୁଡ଼ିକୁ ଅସଂରଚିତ ଡାଟା ସମ୍ଭାଳିବା ଏବଂ ନିଷ୍ପତ୍ତି ନେବାକୁ ଅନୁମତି ଦିଏ।" }
+                    ],
+                    hard: [
+                        { q: "ହାଇପରଅଟୋମେସନ୍ କ’ଣ?", options: ["ଅତ୍ୟଧିକ ଦ୍ରୁତ ଅଟୋମେସନ୍", "ଏକାଧିକ ଟୁଲ୍ ବ୍ୟବହାର କରି ଅଟୋମେସନ୍ ମାପିବା ପାଇଁ ଏକ ଫ୍ରେମୱାର୍କ", "କ୍ଲାଉଡରେ କରାଯାଇଥିବା ଅଟୋମେସନ୍", "ଏକ ପ୍ରକାରର ରୋବଟ୍ ହାର୍ଡୱେର୍"], answer: "ଏକାଧିକ ଟୁଲ୍ ବ୍ୟବହାର କରି ଅଟୋମେସନ୍ ମାପିବା ପାଇଁ ଏକ ଫ୍ରେମୱାର୍କ", explanation: "ହାଇପରଅଟୋମେସନ୍ ହେଉଛି ଏକ ବ୍ୟବସାୟ-ଚାଳିତ ପଦ୍ଧତି ଯାହା RPA, AI, ପ୍ରୋସେସ୍ ମାଇନିଂ ଏବଂ ଅନ୍ୟାନ୍ୟ ଟେକ୍ନୋଲୋଜିର ମିଶ୍ରଣ ବ୍ୟବହାର କରି ଯଥାସମ୍ଭବ ଅଧିକ ପ୍ରକ୍ରିୟାକୁ ଚିହ୍ନଟ, ଯାଞ୍ଚ ଏବଂ ସ୍ୱୟଂଚାଳିତ କରେ।" },
+                        { q: "ଅଟୋମେସନ୍‌ରେ 'ପ୍ରୋସେସ୍ ମାଇନିଂ' କେଉଁଥିପାଇଁ ବ୍ୟବହୃତ ହୁଏ?", options: ["କମ୍ପ୍ୟୁଟରରେ ମୂଲ୍ୟବାନ ଖଣିଜ ପଦାର୍ଥ ଖୋଜିବା ପାଇଁ", "ପ୍ରକୃତ ପ୍ରକ୍ରିୟାଗୁଡ଼ିକୁ ସ୍ୱୟଂଚାଳିତ ଭାବରେ ଆବିଷ୍କାର, ମନିଟର୍ ଏବଂ ଉନ୍ନତ କରିବା ପାଇଁ", "ଆରମ୍ଭରୁ ଏକ ୱାର୍କଫ୍ଲୋ ଡିଜାଇନ୍ କରିବା ପାଇଁ", "ପୁରୁଣା ପ୍ରକ୍ରିୟାଗୁଡ଼ିକୁ ବିଲୋପ କରିବା ପାଇଁ"], answer: "ପ୍ରକୃତ ପ୍ରକ୍ରିୟାଗୁଡ଼ିକୁ ସ୍ୱୟଂଚାଳିତ ଭାବରେ ଆବିଷ୍କାର, ମନିଟର୍ ଏବଂ ଉନ୍ନତ କରିବା ପାଇଁ", explanation: "ପ୍ରୋସେସ୍ ମାଇନିଂ ଟୁଲ୍‌ଗୁଡ଼ିକ IT ସିଷ୍ଟମରୁ ଇଭେଣ୍ଟ୍ ଲଗ୍ ବିଶ୍ଳେଷଣ କରି ବ୍ୟବସାୟିକ ପ୍ରକ୍ରିୟାଗୁଡ଼ିକ ପ୍ରକୃତରେ କିପରି କାର୍ଯ୍ୟ କରୁଛନ୍ତି ତାହାର ଏକ ଭିଜୁଆଲ୍ ମଡେଲ୍ ତିଆରି କରେ, ଯାହା ବାଧା ଏବଂ ସ୍ୱୟଂଚାଳନ ସୁଯୋଗକୁ ପ୍ରକାଶ କରେ।" },
+                        { q: "UI ଅଟୋମେସନ୍ ପ୍ରସଙ୍ଗରେ 'ସିଲେକ୍ଟର୍' କ’ଣ?", options: ["ଜଣେ ବ୍ୟକ୍ତି ଯିଏ ରୋବଟ୍ ଚୟନ କରେ", "ୱେବସାଇଟରେ ଥିବା ଏକ ଡ୍ରପଡାଉନ୍ ମେନୁ", "ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ UI ଉପାଦାନ ପାଇଁ ଏକ ଠିକଣା (ଯେପରିକି ବଟନ୍ କିମ୍ବା ଟେକ୍ସଟ୍ ବକ୍ସ)", "ଏକ ପ୍ରକାରର ଅଟୋମେସନ୍ ଲାଇସେନ୍ସ"], answer: "ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ UI ଉପାଦାନ ପାଇଁ ଏକ ଠିକଣା (ଯେପରିକି ବଟନ୍ କିମ୍ବା ଟେକ୍ସଟ୍ ବକ୍ସ)", explanation: "ସିଲେକ୍ଟର୍‌ଗୁଡ଼ିକ ଷ୍ଟ୍ରିଙ୍ଗ୍ (ପ୍ରାୟତଃ XML ଫ୍ରାଗମେଣ୍ଟ୍) ଯାହା ଏକ ଗ୍ରାଫିକାଲ୍ ୟୁଜର୍ ଇଣ୍ଟରଫେସ୍ ଉପାଦାନର ଗୁଣଗୁଡ଼ିକୁ ସଂରକ୍ଷଣ କରେ, ଯାହା ରୋବଟକୁ ଏହାକୁ ନିର୍ଭରଯୋଗ୍ୟ ଭାବରେ ଚିହ୍ନଟ ଏବଂ ଏହା ସହିତ କାର୍ଯ୍ୟ କରିବାକୁ ସକ୍ଷମ କରେ।" },
+                        { q: "ଏକ ଅନଆଟେଣ୍ଡେଡ୍ ଅଟୋମେସନ୍‌ରେ ତ୍ରୁଟି ପରିଚାଳନା କାହିଁକି ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ?", options: ["ଏହା କୋଡକୁ ଲମ୍ବା କରେ", "ରୋବଟ୍ ଅପ୍ରତ୍ୟାଶିତ ସମସ୍ୟାରୁ ମୁକ୍ତି ପାଇ ନିଜ କାମ ସମ୍ପୂର୍ଣ୍ଣ କରିପାରିବ ବୋଲି ନିଶ୍ଚିତ କରିବା ପାଇଁ", "ରୋବଟକୁ ଅଧିକ ବୁଦ୍ଧିମାନ ଦେଖାଇବା ପାଇଁ", "ଏହା ଏକ ଆଇନଗତ ଆବଶ୍ୟକତା"], answer: "ରୋବଟ୍ ଅପ୍ରତ୍ୟାଶିତ ସମସ୍ୟାରୁ ମୁକ୍ତି ପାଇ ନିଜ କାମ ସମ୍ପୂର୍ଣ୍ଣ କରିପାରିବ ବୋଲି ନିଶ୍ଚିତ କରିବା ପାଇଁ", explanation: "ଯେହେତୁ କୌଣସି ମଣିଷ ଦେଖୁନାହିଁ, ଏକ ଅନଆଟେଣ୍ଡେଡ୍ ବଟ୍ ପାଇଁ ଆପ୍ଲିକେସନ୍ ପରିବର୍ତ୍ତନ, ଡାଟା ସମସ୍ୟା, କିମ୍ବା ଅନ୍ୟାନ୍ୟ ବ୍ୟତିକ୍ରମକୁ ସମ୍ପୂର୍ଣ୍ଣ ବିଫଳ ନହୋଇ ସମ୍ଭାଳିବା ପାଇଁ ଦୃଢ ତ୍ରୁଟି ପରିଚାଳନା ଅତ୍ୟନ୍ତ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ।" },
+                        { q: "ଏକ ପ୍ରୋସେସ୍ ଡିଜାଇନରରେ 'ସିକ୍ୱେନ୍ସ' ଏବଂ 'ଫ୍ଲୋଚାର୍ଟ' ମଧ୍ୟରେ କ’ଣ ପାର୍ଥକ୍ୟ?", options: ["କୌଣସି ପାର୍ଥକ୍ୟ ନାହିଁ", "ସିକ୍ୱେନ୍ସ ଛୋଟ, ରୈଖିକ କାର୍ଯ୍ୟ ପାଇଁ; ଫ୍ଲୋଚାର୍ଟ ଏକାଧିକ ଶାଖା ସହିତ ଜଟିଳ ତର୍କ ପାଇଁ", "ଫ୍ଲୋଚାର୍ଟ ରୋବଟ୍ ପାଇଁ, ସିକ୍ୱେନ୍ସ ମଣିଷ ପାଇଁ", "ସିକ୍ୱେନ୍ସ ଫ୍ଲୋଚାର୍ଟ ଠାରୁ ଦ୍ରୁତ ଚାଲେ"], answer: "ସିକ୍ୱେନ୍ସ ଛୋଟ, ରୈଖିକ କାର୍ଯ୍ୟ ପାଇଁ; ଫ୍ଲୋଚାର୍ଟ ଏକାଧିକ ଶାଖା ସହିତ ଜଟିଳ ତର୍କ ପାଇଁ", explanation: "ସିକ୍ୱେନ୍ସ ହେଉଛି କାର୍ଯ୍ୟକଳାପର ଏକ ସରଳ, ଉପରୁ ତଳ ସେଟ୍, ଯାହା ସିଧାସଳଖ ପ୍ରକ୍ରିୟା ପାଇଁ ଉପଯୁକ୍ତ। ଫ୍ଲୋଚାର୍ଟ ନିଷ୍ପତ୍ତି (ଯଦି/ଅନ୍ୟଥା) ଏବଂ ଶାଖା ସହିତ ଅଧିକ ଜଟିଳ ନିୟନ୍ତ୍ରଣ ପ୍ରବାହକୁ ଅନୁମତି ଦିଏ, ଯେପରିକି ଏକ ପାରମ୍ପରିକ ଚିତ୍ର।" }
+                    ]
                 },
                 "Ethical Hacking": {
-                    easy: [
+                     easy: [
                         { q: "ଏକ ଏଥିକାଲ୍ ହ୍ୟାକର୍‌ର ଅନ୍ୟ ନାମ କ’ଣ?", options: ["ବ୍ଲାକ୍ ହାଟ୍ ହ୍ୟାକର୍", "ସ୍କ୍ରିପ୍ଟ୍ କିଡି", "ହ୍ୱାଇଟ୍ ହାଟ୍ ହ୍ୟାକର୍", "କ୍ରାକର୍"], answer: "ହ୍ୱାଇଟ୍ ହାଟ୍ ହ୍ୟାକର୍", explanation: "ହ୍ୱାଇଟ୍ ହାଟ୍ ହ୍ୟାକର୍‌ମାନେ ସୁରକ୍ଷା ପେସାଦାର, ଯେଉଁମାନେ ସଂସ୍ଥାଗୁଡ଼ିକୁ ସେମାନଙ୍କର ସୁରକ୍ଷା ବୃଦ୍ଧି କରିବାରେ ସାହାଯ୍ୟ କରିବା ପାଇଁ ଅନୁମତି ସହିତ ଦୁର୍ବଳତା ଖୋଜିବା ପାଇଁ ସେମାନଙ୍କର କୌଶଳ ବ୍ୟବହାର କରନ୍ତି।" },
                         { q: "ଏଥିକାଲ୍ ହ୍ୟାକିଂର ମୁଖ୍ୟ ଲକ୍ଷ୍ୟ କ’ଣ?", options: ["ଡାଟା ଚୋରି କରିବା", "ସିଷ୍ଟମ୍ କ୍ରାଶ୍ କରିବା", "ସୁରକ୍ଷା ଦୁର୍ବଳତା ଚିହ୍ନଟ ଏବଂ ସମାଧାନ କରିବା", "ଭାଇରସ୍ ସୃଷ୍ଟି କରିବା"], answer: "ସୁରକ୍ଷା ଦୁର୍ବଳତା ଚିହ୍ନଟ ଏବଂ ସମାଧାନ କରିବା", explanation: "ଏହାର ମୁଖ୍ୟ ଉଦ୍ଦେଶ୍ୟ ହେଉଛି ଦୁର୍ଭାବନାପୂର୍ଣ୍ଣ ଆକ୍ରମଣକାରୀମାନେ ସେଗୁଡ଼ିକୁ ଶୋଷଣ କରିବା ପୂର୍ବରୁ ସକ୍ରିୟ ଭାବରେ ଦୁର୍ବଳତା ଖୋଜିବା।" },
                         { q: "ଏକ 'ଫିସିଂ' ଆକ୍ରମଣ କ’ଣ?", options: ["ହ୍ୟାକର୍‌ମାନଙ୍କ ପାଇଁ ଏକ ମାଛଧରା ଯାତ୍ରା", "ଏକ ପ୍ରକାରର କମ୍ପ୍ୟୁଟର୍ ହାର୍ଡୱେର୍", "ପ୍ରତାରଣାମୂଳକ ଇମେଲ୍ ବା ୱେବସାଇଟ୍ ମାଧ୍ୟମରେ ସମ୍ବେଦନଶୀଳ ତଥ୍ୟ ଚୋରି କରିବାର ଏକ ପ୍ରୟାସ", "ଏକ ସର୍ଭର୍ ଥଣ୍ଡା କରିବାର ଏକ ପଦ୍ଧତି"], answer: "ପ୍ରତାରଣାମୂଳକ ଇମେଲ୍ ବା ୱେବସାଇଟ୍ ମାଧ୍ୟମରେ ସମ୍ବେଦନଶୀଳ ତଥ୍ୟ ଚୋରି କରିବାର ଏକ ପ୍ରୟାସ", explanation: "ଫିସିଂ ଆକ୍ରମଣ ଉପଭୋକ୍ତାମାନଙ୍କୁ ଏକ ବିଶ୍ୱସ୍ତ ସଂସ୍ଥା ଭାବରେ ଛଦ୍ମବେଶରେ ପାସୱାର୍ଡ ବା କ୍ରେଡିଟ୍ କାର୍ଡ ନମ୍ବର ପରି ତଥ୍ୟ ପ୍ରକାଶ କରିବାକୁ ପ୍ରତାରଣା କରେ।" },
                         { q: "ହ୍ୟାକିଂରେ 'ପେନଟେଷ୍ଟିଂ'ର ଅର୍ଥ କ’ଣ?", options: ["ପେନିଟ୍ରେସନ୍ ଟେଷ୍ଟିଂ", "ପରମାନେଣ୍ଟ୍ ଟେଷ୍ଟିଂ", "ପେନ୍‌ସିଲ୍ ଟେଷ୍ଟିଂ", "ପେଣ୍ଟାଗନ୍ ଟେଷ୍ଟିଂ"], answer: "ପେନିଟ୍ରେସନ୍ ଟେଷ୍ଟିଂ", explanation: "ପେନିଟ୍ରେସନ୍ ଟେଷ୍ଟିଂ ହେଉଛି ଆପଣଙ୍କ କମ୍ପ୍ୟୁଟର୍ ସିଷ୍ଟମ୍ ବିରୁଦ୍ଧରେ ଏକ ଅନୁକରଣୀୟ ସାଇବର୍ ଆକ୍ରମଣ, ଯାହା ଶୋଷଣୀୟ ଦୁର୍ବଳତା ପାଇଁ ଯାଞ୍ଚ କରେ।" },
-                        { q: "ଏଥିମଧ୍ୟରୁ କେଉଁଟି ଏଥିକାଲ୍ ହ୍ୟାକର୍‌ମାନଙ୍କ ଦ୍ୱାରା ବ୍ୟବହୃତ ଏକ ସାଧାରଣ ଟୁଲ୍?", options: ["ମାଇକ୍ରୋସଫ୍ଟ୍ ୱାର୍ଡ", "ଏନମ୍ୟାପ୍", "କାଲକୁଲେଟର୍", "ଗୁଗୁଲ୍ କ୍ରୋମ୍"], answer: "ଏନମ୍ୟାପ୍", explanation: "ଏନମ୍ୟାପ୍ (ନେଟୱାର୍କ ମ୍ୟାପର୍) ହେଉଛି ନେଟୱାର୍କ ଆବିଷ୍କାର ଏବଂ ସୁରକ୍ଷା ଅଡିଟିଂ ପାଇଁ ବ୍ୟବହୃତ ଏକ ଶକ୍ତିଶାଳୀ, ମାଗଣା ଟୁଲ୍।" },
-                        { q: "ଏକ 'ଫାୟାରୱାଲ୍' କ’ଣ?", options: ["ଏକ ଭୌତିକ କାନ୍ଥ ଯେଉଁଥିରେ ନିଆଁ ଲାଗିଛି", "ଏକ ସଫ୍ଟୱେର୍ ଯାହା କୋଡ୍ ଲେଖେ", "ଏକ ନେଟୱାର୍କ ସୁରକ୍ଷା ଉପକରଣ ଯାହା ଟ୍ରାଫିକକୁ ମନିଟର୍ ଏବଂ ଫିଲ୍ଟର୍ କରେ", "ଏକ ପ୍ରକାରର ମାଲୱେର୍"], answer: "ଏକ ନେଟୱାର୍କ ସୁରକ୍ଷା ଉପକରଣ ଯାହା ଟ୍ରାଫିକକୁ ମନିଟର୍ ଏବଂ ଫିଲ୍ଟର୍ କରେ", explanation: "ଏକ ଫାୟାରୱାଲ୍ ଏକ ବିଶ୍ୱସ୍ତ ଆଭ୍ୟନ୍ତରୀଣ ନେଟୱାର୍କ ଏବଂ ଏକ ଅବିଶ୍ୱସ୍ତ ବାହ୍ୟ ନେଟୱାର୍କ, ଯେପରିକି ଇଣ୍ଟରନେଟ୍, ମଧ୍ୟରେ ଏକ ପ୍ରତିବନ୍ଧକ ଭାବରେ କାର୍ଯ୍ୟ କରେ।" },
-                        { q: "ଏକ 'ଶକ୍ତିଶାଳୀ' ପାସୱାର୍ଡ କ’ଣ?", options: ["ଆପଣଙ୍କ ନାମ", "123456", "ବଡ଼/ଛୋଟ ଅକ୍ଷର, ସଂଖ୍ୟା, ଏବଂ ପ୍ରତୀକର ଏକ ଲମ୍ବା ମିଶ୍ରଣ", "password"], answer: "ବଡ଼/ଛୋଟ ଅକ୍ଷର, ସଂଖ୍ୟା, ଏବଂ ପ୍ରତୀକର ଏକ ଲମ୍ବା ମିଶ୍ରଣ", explanation: "ଏକ ଶକ୍ତିଶାଳୀ ପାସୱାର୍ଡ ଲମ୍ବା ଏବଂ ଜଟିଳ, ଯାହା ଆକ୍ରମଣକାରୀମାନଙ୍କ ପାଇଁ ବ୍ରୁଟ୍-ଫୋର୍ସ ପଦ୍ଧତି ବ୍ୟବହାର କରି ଅନୁମାନ କରିବା ବା କ୍ରାକ୍ କରିବା କଷ୍ଟକର କରିଥାଏ।" }
+                        { q: "ଏକ 'ଫାୟାରୱାଲ୍' କ’ଣ?", options: ["ଏକ ଭୌତିକ କାନ୍ଥ ଯେଉଁଥିରେ ନିଆଁ ଲାଗିଛି", "ଏକ ସଫ୍ଟୱେର୍ ଯାହା କୋଡ୍ ଲେଖେ", "ଏକ ନେଟୱାର୍କ ସୁରକ୍ଷା ଉପକରଣ ଯାହା ଟ୍ରାଫିକକୁ ମନିଟର୍ ଏବଂ ଫିଲ୍ଟର୍ କରେ", "ଏକ ପ୍ରକାରର ମାଲୱେର୍"], answer: "ଏକ ନେଟୱାର୍କ ସୁରକ୍ଷା ଉପକରଣ ଯାହା ଟ୍ରାଫିକକୁ ମନିଟର୍ ଏବଂ ଫିଲ୍ଟର୍ କରେ", explanation: "ଏକ ଫାୟାରୱାଲ୍ ଏକ ବିଶ୍ୱସ୍ତ ଆଭ୍ୟନ୍ତରୀଣ ନେଟୱାର୍କ ଏବଂ ଏକ ଅବିଶ୍ୱସ୍ତ ବାହ୍ୟ ନେଟୱାର୍କ, ଯେପରିକି ଇଣ୍ଟରନେଟ୍, ମଧ୍ୟରେ ଏକ ପ୍ରତିବନ୍ଧକ ଭାବରେ କାର୍ଯ୍ୟ କରେ।" }
                     ],
-                    medium: [/* ... /], hard: [/ ... */]
+                    medium: [
+                        { q: "ସୂଚନା ସୁରକ୍ଷାର ତିନୋଟି ମୂଳ ନୀତି ('CIA ଟ୍ରାଇଆଡ୍') କ’ଣ?", options: ["ଗୋପନୀୟତା, ଅଖଣ୍ଡତା, ଉପଲବ୍ଧତା", "ନିୟନ୍ତ୍ରଣ, ସୂଚନା, ପ୍ରବେଶ", "ସାଇବର ସୁରକ୍ଷା, ଗୁପ୍ତଚର, ଆକ୍ରମଣ", "ସଂଯୋଗ, ଅନୁପ୍ରବେଶ, କାର୍ଯ୍ୟ"], answer: "ଗୋପନୀୟତା, ଅଖଣ୍ଡତା, ଉପଲବ୍ଧତା", explanation: "ଏହି ତିନୋଟି ନୀତି ସୂଚନା ସୁରକ୍ଷାର ମୂଳଦୁଆ ଅଟେ: ଗୋପନୀୟତା (ଡାଟାକୁ ଗୁପ୍ତ ରଖିବା), ଅଖଣ୍ଡତା (ଡାଟା ପରିବର୍ତ୍ତିତ ହୋଇନାହିଁ ବୋଲି ନିଶ୍ଚିତ କରିବା), ଏବଂ ଉପଲବ୍ଧତା (ଆବଶ୍ୟକ ହେଲେ ଡାଟା ଉପଲବ୍ଧ ବୋଲି ନିଶ୍ଚିତ କରିବା)।" },
+                        { q: "ଏକ 'ମ୍ୟାନ୍-ଇନ୍-ଦ-ମିଡିଲ୍' (MITM) ଆକ୍ରମଣ କ’ଣ?", options: ["କେନ୍ଦ୍ରୀୟ ଆମେରିକାରେ ଏକ ସର୍ଭର ଉପରେ ଆକ୍ରମଣ", "ଜଣେ ଆକ୍ରମଣକାରୀ ଗୁପ୍ତରେ ଦୁଇ ପକ୍ଷ ମଧ୍ୟରେ ଯୋଗାଯୋଗକୁ ବାଧା ଦେଇ ରିଲେ କରେ", "ଏକ ନେଟୱାର୍କ ସୁଇଚ୍ ଉପରେ ଏକ ଶାରୀରିକ ଆକ୍ରମଣ", "ଏକ ପ୍ରକାରର ଫିସିଂ ଇମେଲ୍"], answer: "ଜଣେ ଆକ୍ରମଣକାରୀ ଗୁପ୍ତରେ ଦୁଇ ପକ୍ଷ ମଧ୍ୟରେ ଯୋଗାଯୋଗକୁ ବାଧା ଦେଇ ରିଲେ କରେ", explanation: "ଏକ MITM ଆକ୍ରମଣରେ, ଆକ୍ରମଣକାରୀ ଦୁଇଟି ଯୋଗାଯୋଗକାରୀ ପକ୍ଷ ମଧ୍ୟରେ ନିଜକୁ ସ୍ଥାପନ କରେ ଯାହାଦ୍ୱାରା ସେମାନେ ଟ୍ରାଫିକକୁ ଶୁଣିପାରିବେ ବା ପରିବର୍ତ୍ତନ କରିପାରିବେ, ଯେତେବେଳେ କି ପକ୍ଷମାନେ ବିଶ୍ୱାସ କରନ୍ତି ଯେ ସେମାନେ ସିଧାସଳଖ ଯୋଗାଯୋଗ କରୁଛନ୍ତି।" },
+                        { q: "'SQL ଇଞ୍ଜେକ୍ସନ୍' କ’ଣ?", options: ["ଏକ ଡାଟାବେସରେ ଅଧିକ ମେମୋରୀ ଇଞ୍ଜେକ୍ଟ କରିବା", "ଡାଟା-ଚାଳିତ ଆପ୍ଲିକେସନ ଉପରେ ଆକ୍ରମଣ କରିବା ପାଇଁ ବ୍ୟବହୃତ ଏକ କୋଡ୍ ଇଞ୍ଜେକ୍ସନ୍ କୌଶଳ", "ଡାଟାବେସ୍ କ୍ୱେରୀକୁ ତ୍ୱରାନ୍ୱିତ କରିବାର ଏକ ପଦ୍ଧତି", "ଏକ ପ୍ରକାରର ଡାଟାବେସ୍ ସଫ୍ଟୱେର୍"], answer: "ଡାଟା-ଚାଳିତ ଆପ୍ଲିକେସନ ଉପରେ ଆକ୍ରମଣ କରିବା ପାଇଁ ବ୍ୟବହୃତ ଏକ କୋଡ୍ ଇଞ୍ଜେକ୍ସନ୍ କୌଶଳ", explanation: "SQL ଇଞ୍ଜେକ୍ସନ୍ ସେତେବେଳେ ହୁଏ ଯେତେବେଳେ ଜଣେ ଆକ୍ରମଣକାରୀ ଏକ କ୍ୱେରୀରେ ଦୁର୍ଭାବନାପୂର୍ଣ୍ଣ SQL କୋଡ୍ ଭର୍ତ୍ତି କରେ, ଯାହା ସେମାନଙ୍କୁ ପ୍ରାମାଣିକିକରଣକୁ ବାଇପାସ୍ କରିବା, ଡାଟା ଦେଖିବା, ପରିବର୍ତ୍ତନ କରିବା ବା ବିଲୋପ କରିବାକୁ ଅନୁମତି ଦେଇପାରେ।" },
+                        { q: "ଏଥିମଧ୍ୟରୁ କେଉଁଟି 'ଜିରୋ-ଡେ' ଦୁର୍ବଳତାକୁ ବର୍ଣ୍ଣନା କରେ?", options: ["ଏକ ଦୁର୍ବଳତା ଯାହା 24 ଘଣ୍ଟାରୁ କମ୍ ସମୟ ଧରି ରହିଛି", "ଏକ ଦୁର୍ବଳତା ଯାହାକୁ ଶୋଷଣ କରିବା ସହଜ", "ଏକ ଦୁର୍ବଳତା ଯାହା ପ୍ରକାଶିତ ହୋଇଛି କିନ୍ତୁ ବିକ୍ରେତା ଦ୍ୱାରା ଏପର୍ଯ୍ୟନ୍ତ ପ୍ୟାଚ୍ କରାଯାଇ ନାହିଁ", "କୌଣସି ପ୍ରଭାବ ନଥିବା ଏକ ଦୁର୍ବଳତା"], answer: "ଏକ ଦୁର୍ବଳତା ଯାହା ପ୍ରକାଶିତ ହୋଇଛି କିନ୍ତୁ ବିକ୍ରେତା ଦ୍ୱାରା ଏପର୍ଯ୍ୟନ୍ତ ପ୍ୟାଚ୍ କରାଯାଇ ନାହିଁ", explanation: "ଏକ 'ଜିରୋ-ଡେ' ଦୁର୍ବଳତା ହେଉଛି ଏକ ସୁରକ୍ଷା ତ୍ରୁଟି ଯାହା ସଫ୍ଟୱେର୍ ବିକ୍ରେତାଙ୍କ ପାଖରେ ପ୍ୟାଚ୍ ଉପଲବ୍ଧ ହେବା ପୂର୍ବରୁ ଆକ୍ରମଣକାରୀ (ବା ଜନସାଧାରଣ)ଙ୍କୁ ଜଣା, ଯାହା ସିଷ୍ଟମକୁ ଆକ୍ରମଣ ପାଇଁ ଖୋଲା ଛାଡିଦିଏ।" },
+                        { q: "ହ୍ୟାକିଂ ପ୍ରସଙ୍ଗରେ 'ସୋସିଆଲ୍ ଇଞ୍ଜିନିୟରିଂ' କ’ଣ?", options: ["ହ୍ୟାକରମାନଙ୍କ ପାଇଁ ଏକ ସୋସିଆଲ୍ ମିଡିଆ ନେଟୱାର୍କ ଡିଜାଇନ୍ କରିବା", "କାର୍ଯ୍ୟ କରିବା ବା ଗୋପନୀୟ ସୂଚନା ପ୍ରକାଶ କରିବା ପାଇଁ ଲୋକଙ୍କର ମନସ୍ତାତ୍ତ୍ୱିକ ଚାଳନା", "ସାମାଜିକ ବିଷୟ ଉପରେ ଏକ ଇଞ୍ଜିନିୟରିଂ ସମ୍ମିଳନୀ", "ସୋସିଆଲ୍ ମିଡିଆ ମନ୍ତବ୍ୟରୁ ଏକ କମ୍ପ୍ୟୁଟର୍ ତିଆରି କରିବା"], answer: "କାର୍ଯ୍ୟ କରିବା ବା ଗୋପନୀୟ ସୂଚନା ପ୍ରକାଶ କରିବା ପାଇଁ ଲୋକଙ୍କର ମନସ୍ତାତ୍ତ୍ୱିକ ଚାଳନା", explanation: "ସୋସିଆଲ୍ ଇଞ୍ଜିନିୟରିଂ ଲୋକଙ୍କୁ ସାଧାରଣ ସୁରକ୍ଷା ପ୍ରକ୍ରିୟା ଭାଙ୍ଗିବାକୁ ପ୍ରତାରଣା କରିବା ପାଇଁ ମାନବିକ ପାରସ୍ପରିକ କ୍ରିୟା ଏବଂ ବିଶ୍ୱାସ ଉପରେ ନିର୍ଭର କରେ, ଯାହା ପ୍ରାୟତଃ ଏକ ବଡ଼ ବୈଷୟିକ ହ୍ୟାକର ପୂର୍ବରୁ ହୋଇଥାଏ।" }
+                    ],
+                    hard: [
+                        { q: "'କ୍ରସ୍-ସାଇଟ୍ ସ୍କ୍ରିପ୍ଟିଂ' (XSS) ଆକ୍ରମଣ କ’ଣ?", options: ["ଏକ ସ୍କ୍ରିପ୍ଟ ଯାହା ୱେବସାଇଟ୍‌କୁ ଅବରୋଧ କରେ", "ଏକ ଆକ୍ରମଣ ଯେଉଁଥିରେ ଦୁର୍ଭାବନାପୂର୍ଣ୍ଣ ସ୍କ୍ରିପ୍ଟ‌ଗୁଡ଼ିକୁ ଅନ୍ୟଥା ସୁରକ୍ଷିତ ଏବଂ ବିଶ୍ୱସ୍ତ ୱେବସାଇଟ୍‌ରେ ଇଞ୍ଜେକ୍ଟ କରାଯାଏ", "ୱେବସାଇଟ୍ କାର୍ଯ୍ୟଦକ୍ଷତା ପରୀକ୍ଷା ପାଇଁ ଏକ ଉପକରଣ", "ଦୁଇଟି ୱେବସାଇଟକୁ ଏକାଠି ସଂଯୋଗ କରିବାର ଏକ ପଦ୍ଧତି"], answer: "ଏକ ଆକ୍ରମଣ ଯେଉଁଥିରେ ଦୁର୍ଭାବନାପୂର୍ଣ୍ଣ ସ୍କ୍ରିପ୍ଟ‌ଗୁଡ଼ିକୁ ଅନ୍ୟଥା ସୁରକ୍ଷିତ ଏବଂ ବିଶ୍ୱସ୍ତ ୱେବସାଇଟ୍‌ରେ ଇଞ୍ଜେକ୍ଟ କରାଯାଏ", explanation: "XSS ଆକ୍ରମଣ ସେତେବେଳେ ହୁଏ ଯେତେବେଳେ ଜଣେ ଆକ୍ରମଣକାରୀ ଏକ ୱେବ୍ ଆପ୍ଲିକେସନ୍ ବ୍ୟବହାର କରି ଅନ୍ୟ ଜଣେ ଶେଷ ଉପଭୋକ୍ତାଙ୍କୁ ଦୁର୍ଭାବନାପୂର୍ଣ୍ଣ କୋଡ୍ ପଠାଏ, ସାଧାରଣତଃ ଏକ ବ୍ରାଉଜର୍-ପାର୍ଶ୍ୱ ସ୍କ୍ରିପ୍ଟ ଆକାରରେ, ପ୍ରବେଶ ନିୟନ୍ତ୍ରଣକୁ ବାଇପାସ୍ କରି।" },
+                        { q: "ଏକ ଭାଇରସ୍ ଏବଂ ଏକ ୱର୍ମ ମଧ୍ୟରେ କ’ଣ ପାର୍ଥକ୍ୟ?", options: ["ଏକ ୱର୍ମ ଏକ ପ୍ରକାରର ଭାଇରସ୍", "ଭାଇରସ୍ ବିସ୍ତାର ପାଇଁ ଏକ ହୋଷ୍ଟ୍ ପ୍ରୋଗ୍ରାମ୍ ଆବଶ୍ୟକ କରେ, ଯେତେବେଳେ କି ୱର୍ମ ନେଟୱାର୍କରେ ନିଜେ ନିଜେ ପ୍ରତିକୃତି କରିପାରେ", "ଭାଇରସ୍ ହାର୍ଡୱେର୍ ସଂକ୍ରମିତ କରେ, ୱର୍ମ ସଫ୍ଟୱେର୍ ସଂକ୍ରମିତ କରେ", "କୌଣସି ପାର୍ଥକ୍ୟ ନାହିଁ"], answer: "ଭାଇରସ୍ ବିସ୍ତାର ପାଇଁ ଏକ ହୋଷ୍ଟ୍ ପ୍ରୋଗ୍ରାମ୍ ଆବଶ୍ୟକ କରେ, ଯେତେବେଳେ କି ୱର୍ମ ନେଟୱାର୍କରେ ନିଜେ ନିଜେ ପ୍ରତିକୃତି କରିପାରେ", explanation: "ଏକ ମୁଖ୍ୟ ପାର୍ଥକ୍ୟ ହେଉଛି ପ୍ରଚାର। ଭାଇରସ୍ ନିଜକୁ ଏକ ଫାଇଲ୍ ବା ପ୍ରୋଗ୍ରାମରେ ସଂଲଗ୍ନ କରେ ଏବଂ ଏହାକୁ ବିସ୍ତାର କରିବା ପାଇଁ ମାନବ କାର୍ଯ୍ୟ ଉପରେ ନିର୍ଭର କରେ। ୱର୍ମ ହେଉଛି ମାଲୱେରର ଏକ ସ୍ୱତନ୍ତ୍ର ଅଂଶ ଯାହା ଅନ୍ୟ କମ୍ପ୍ୟୁଟରକୁ ବିସ୍ତାର କରିବା ପାଇଁ ନିଜର ପ୍ରତିକୃତି ତିଆରି କରେ, ପ୍ରାୟତଃ ଏକ ଦୁର୍ବଳତାର ଶୋଷଣ କରି।" },
+                        { q: "'DDoS' ଆକ୍ରମଣ କ’ଣ?", options: ["ଡାଇରେକ୍ଟ ଡିନାୟାଲ୍ ଅଫ୍ ସର୍ଭିସ୍", "ଡିଷ୍ଟ୍ରିବ୍ୟୁଟେଡ୍ ଡିନାୟାଲ୍ ଅଫ୍ ସର୍ଭିସ୍", "ଡାଟା ଡିଲିସନ୍ ଅଫ୍ ସର୍ଭିସ୍", "ଡିଜିଟାଲ୍ ଡିକନଷ୍ଟ୍ରକସନ୍ ଅଫ୍ ସର୍ଭିସ୍"], answer: "ଡିଷ୍ଟ୍ରିବ୍ୟୁଟେଡ୍ ଡିନାୟାଲ୍ ଅଫ୍ ସର୍ଭିସ୍", explanation: "DDoS ଆକ୍ରମଣ ହେଉଛି ଏକ ଲକ୍ଷ୍ୟଭେଦୀ ସର୍ଭର୍ ବା ନେଟୱାର୍କର ସାଧାରଣ ଟ୍ରାଫିକକୁ ବାଧା ଦେବାର ଏକ ଦୁର୍ଭାବନାପୂର୍ଣ୍ଣ ପ୍ରୟାସ, ଯେଉଁଥିରେ ଲକ୍ଷ୍ୟକୁ ଏକାଧିକ ଉତ୍ସ ('ବଟନେଟ୍')ରୁ ଇଣ୍ଟରନେଟ୍ ଟ୍ରାଫିକର ବନ୍ୟାରେ ବୁଡ଼ାଇ ଦିଆଯାଏ।" },
+                        { q: "ଏକ ପେନିଟ୍ରେସନ୍ ପରୀକ୍ଷା ସମୟରେ, 'ପ୍ରିଭିଲେଜ୍ ଏସ୍କାଲେସନ୍' କ’ଣ?", options: ["ଅଧିକ ଦେୟ ମାଗିବା", "ସମ୍ବଳଗୁଡ଼ିକରେ ଉନ୍ନତ ପ୍ରବେଶ ପାଇବା ପାଇଁ ଏକ ବଗ୍ ବା ଦୁର୍ବଳତାର ଶୋଷଣ କରିବାର କାର୍ଯ୍ୟ", "ଧୀର ଇଣ୍ଟରନେଟ୍ ସଂଯୋଗରୁ ଦ୍ରୁତକୁ ପରିବର୍ତ୍ତନ କରିବା", "ସଫଳତାର ସହିତ ହ୍ୟାକିଂ ପାଇଁ ପଦୋନ୍ନତି ପାଇବା"], answer: "ସମ୍ବଳଗୁଡ଼ିକରେ ଉନ୍ନତ ପ୍ରବେଶ ପାଇବା ପାଇଁ ଏକ ବଗ୍ ବା ଦୁର୍ବଳତାର ଶୋଷଣ କରିବାର କାର୍ଯ୍ୟ", explanation: "ପ୍ରିଭିଲେଜ୍ ଏସ୍କାଲେସନ୍ ଏକ ଗୁରୁତ୍ୱପୂର୍ଣ୍ଣ ପର୍ଯ୍ୟାୟ ଯେଉଁଠାରେ ଜଣେ ଆକ୍ରମଣକାରୀ ଯିଏ ଏକ ସିଷ୍ଟମରେ ପ୍ରାରମ୍ଭିକ, ନିମ୍ନ-ସ୍ତରର ପ୍ରବେଶ ପାଇଛି, ସେ ଉଚ୍ଚ-ସ୍ତରୀୟ ଅନୁମତି, ଯେପରିକି ଆଡମିନିଷ୍ଟ୍ରେଟର୍ ବା ରୁଟ୍ ପ୍ରବେଶ, ପାଇବା ପାଇଁ ଦୁର୍ବଳତାର ଶୋଷଣ କରେ।" },
+                        { q: "'ବଫର୍ ଓଭରଫ୍ଲୋ' ଦୁର୍ବଳତା କ’ଣ?", options: ["ଏକ ବଫରରେ ବହୁତ ଅଧିକ ଡାଟା ଥିବା", "ଏକ ଅସଙ୍ଗତି ଯେଉଁଠାରେ ଏକ ପ୍ରୋଗ୍ରାମ୍, ବଫରକୁ ଡାଟା ଲେଖିବା ସମୟରେ, ବଫରର ସୀମା ଅତିକ୍ରମ କରି ପାର୍ଶ୍ୱବର୍ତ୍ତୀ ମେମୋରୀକୁ ଓଭରରାଇଟ୍ କରେ", "ଏକ ନେଟୱାର୍କ ଟ୍ରାଫିକ୍ ଜାମ୍", "ଏକ ବୈଶିଷ୍ଟ୍ୟ ଯାହା ବଫରକୁ ବଡ଼ କରେ"], answer: "ଏକ ଅସଙ୍ଗତି ଯେଉଁଠାରେ ଏକ ପ୍ରୋଗ୍ରାମ୍, ବଫରକୁ ଡାଟା ଲେଖିବା ସମୟରେ, ବଫରର ସୀମା ଅତିକ୍ରମ କରି ପାର୍ଶ୍ୱବର୍ତ୍ତୀ ମେମୋରୀକୁ ଓଭରରାଇଟ୍ କରେ", explanation: "ଏହାକୁ ଆକ୍ରମଣକାରୀମାନେ ଦୁର୍ଭାବନାପୂର୍ଣ୍ଣ କୋଡ୍ ଇଞ୍ଜେକ୍ଟ ଏବଂ ଏକଜିକ୍ୟୁଟ୍ କରିବା, ସିଷ୍ଟମକୁ କ୍ରାଶ୍ କରିବା, ବା ଡାଟାକୁ ଦୁର୍ନୀତିଗ୍ରସ୍ତ କରିବା ପାଇଁ ଶୋଷଣ କରିପାରନ୍ତି। ଏହା C/C++ ପରି ନିମ୍ନ-ସ୍ତରୀୟ ଭାଷାରେ ଏକ ସାଧାରଣ ଦୁର୍ବଳତା।" }
+                    ]
                 }
             }
         };
-        
-        // --- Populate Medium and Hard levels by duplicating and slightly modifying Easy questions for demo purposes ---
-        Object.keys(quizData).forEach(lang => {
-            Object.keys(quizData[lang]).forEach(domain => {
-                const easyQuestions = quizData[lang][domain].easy;
-                if (easyQuestions && easyQuestions.length > 0) {
-                    // Medium: a slightly harder version
-                    quizData[lang][domain].medium = easyQuestions.map(q => ({...q, q: [Medium] ${q.q}})).slice(0, 7);
-                    // Hard: a slightly harder version
-                    quizData[lang][domain].hard = easyQuestions.map(q => ({...q, q: [Hard] ${q.q}})).slice(0, 7);
-                }
-            });
-        });
         
         const uiText = {
              english: {
@@ -320,6 +413,7 @@
                 mainMenu: "Main Menu",
                 correct: "POWERFUL!",
                 wrong: "CRACKED!",
+                correctAnswerLabel: "Correct Answer:"
              },
              hindi: {
                 domainTitle: "अपना क्षेत्र चुनें",
@@ -340,6 +434,7 @@
                 mainMenu: "मुख्य मेनू",
                 correct: "शक्तिशाली!",
                 wrong: "गलत!",
+                correctAnswerLabel: "सही उत्तर:"
              },
              odia: {
                 domainTitle: "ଆପଣଙ୍କ କ୍ଷେତ୍ର ବାଛନ୍ତୁ",
@@ -360,6 +455,7 @@
                 mainMenu: "ମୁଖ୍ୟ ମେନୁ",
                 correct: "ଶକ୍ତିଶାଳୀ!",
                 wrong: "ଭୁଲ୍!",
+                correctAnswerLabel: "ସଠିକ୍ ଉତ୍ତର:"
              }
         };
 
@@ -394,14 +490,16 @@
 
         function selectDomain(domain) {
             currentDomain = domain;
+            // Handle button highlighting
             const buttons = domainSelectionDiv.querySelectorAll('button');
             buttons.forEach(btn => {
-                if (btn.innerText.includes(domain)) {
+                if (btn.onclick.toString().includes('selectDomain')) {
+                     btn.classList.remove('btn-primary');
+                     btn.classList.add('btn-secondary');
+                }
+                if (btn.innerText === domain) {
                     btn.classList.add('btn-primary');
                     btn.classList.remove('btn-secondary');
-                } else if (btn.onclick.toString().includes('selectDomain')) {
-                    btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-secondary');
                 }
             });
             checkSelections();
@@ -409,14 +507,16 @@
 
         function selectLevel(level) {
             currentLevel = level;
+             // Handle button highlighting
             const buttons = domainSelectionDiv.querySelectorAll('button');
             buttons.forEach(btn => {
-                if (btn.innerText.toLowerCase().includes(level)) {
+                if (btn.onclick.toString().includes('selectLevel')) {
+                     btn.classList.remove('btn-primary');
+                     btn.classList.add('btn-secondary');
+                }
+                if (btn.innerText.toLowerCase() === level) {
                     btn.classList.add('btn-primary');
                     btn.classList.remove('btn-secondary');
-                } else if (btn.onclick.toString().includes('selectLevel')) {
-                    btn.classList.remove('btn-primary');
-                    btn.classList.add('btn-secondary');
                 }
             });
             checkSelections();
@@ -425,27 +525,36 @@
         function checkSelections() {
             if (currentDomain && currentLevel) {
                 startQuizBtn.disabled = false;
-                startQuizBtn.classList.remove('opacity-50', 'cursor-not-allowed');
             }
         }
 
         function startQuiz() {
             currentQuestions = quizData[currentLanguage][currentDomain][currentLevel];
+            // Shuffle questions for variety
+            currentQuestions.sort(() => Math.random() - 0.5);
             currentQuestionIndex = 0;
             score = 0;
             domainSelectionDiv.classList.add('hidden');
+            resultsScreenDiv.classList.add('hidden');
             quizScreenDiv.classList.remove('hidden');
             loadQuestion();
         }
 
         function loadQuestion() {
             resetState();
+            if (currentQuestionIndex >= currentQuestions.length) {
+                showResults();
+                return;
+            }
             const question = currentQuestions[currentQuestionIndex];
             document.getElementById('question-text').innerText = question.q;
             
             const optionsContainer = document.getElementById('options-container');
             optionsContainer.innerHTML = '';
-            question.options.forEach(option => {
+            // Shuffle options
+            const shuffledOptions = [...question.options].sort(() => Math.random() - 0.5);
+
+            shuffledOptions.forEach(option => {
                 const button = document.createElement('button');
                 button.innerText = option;
                 button.classList.add('btn', 'option-btn', 'w-full', 'p-4', 'text-left', 'rounded-lg');
@@ -477,16 +586,21 @@
                 feedbackMessage.innerText = uiText[currentLanguage].correct;
                 feedbackMessage.classList.add('feedback-correct');
                 feedbackMessage.classList.remove('feedback-wrong');
+                explanationText.innerHTML = question.explanation;
             } else {
                 feedbackMessage.innerText = uiText[currentLanguage].wrong;
                 feedbackMessage.classList.add('feedback-wrong');
                 feedbackMessage.classList.remove('feedback-correct');
-                explanationText.innerHTML = <strong>Correct Answer:</strong> ${question.answer}<br>${question.explanation};
-                explanationText.classList.remove('hidden');
+                explanationText.innerHTML = `<strong>${uiText[currentLanguage].correctAnswerLabel}</strong> ${question.answer}<br><br>${question.explanation}`;
             }
+            explanationText.classList.remove('hidden');
             
             highlightAnswers(question.answer);
-            updateProgress();
+
+            // Update score text and progress bar to reflect completion
+            document.getElementById('score-text').innerText = `${uiText[currentLanguage].score}: ${score}`;
+            const progressPercentage = ((currentQuestionIndex + 1) / currentQuestions.length) * 100;
+            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
 
             document.getElementById('submit-btn').classList.add('hidden');
             document.getElementById('next-btn').classList.remove('hidden');
@@ -525,10 +639,11 @@
         
         function updateProgress() {
             const texts = uiText[currentLanguage];
-            document.getElementById('progress-text').innerText = ${texts.question} ${currentQuestionIndex + 1} ${texts.of} ${currentQuestions.length};
-            document.getElementById('score-text').innerText = ${texts.score}: ${score};
+            const questionNumber = currentQuestionIndex < currentQuestions.length ? currentQuestionIndex + 1 : currentQuestions.length;
+            document.getElementById('progress-text').innerText = `${texts.question} ${questionNumber} ${texts.of} ${currentQuestions.length}`;
+            document.getElementById('score-text').innerText = `${texts.score}: ${score}`;
             const progressPercentage = ((currentQuestionIndex) / currentQuestions.length) * 100;
-            document.getElementById('progress-bar').style.width = ${progressPercentage}%;
+            document.getElementById('progress-bar').style.width = `${progressPercentage}%`;
         }
 
         function showResults() {
@@ -539,7 +654,7 @@
             const percentage = (score / currentQuestions.length) * 100;
             
             document.getElementById('results-title').innerText = texts.resultsTitle;
-            document.getElementById('results-score-text').innerText = ${texts.finalScore} ${score} / ${currentQuestions.length};
+            document.getElementById('results-score-text').innerText = `${texts.finalScore} ${score} / ${currentQuestions.length}`;
             
             let message = '';
             if (percentage >= 80) message = texts.messageGood;
@@ -552,7 +667,6 @@
         }
         
         function restartQuiz() {
-            resultsScreenDiv.classList.add('hidden');
             startQuiz();
         }
 
@@ -565,6 +679,8 @@
             selectedOption = null;
             
             resultsScreenDiv.classList.add('hidden');
+            quizScreenDiv.classList.add('hidden');
+            domainSelectionDiv.classList.add('hidden');
             languageSelectionDiv.classList.remove('hidden');
 
             // Reset domain selection screen buttons
