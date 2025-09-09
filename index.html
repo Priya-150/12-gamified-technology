@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tech Whiz Quiz</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #111827; /* bg-gray-900 */
+        }
+        .font-roboto-mono {
+            font-family: 'Roboto Mono', monospace;
+        }
+        .card {
+            background-color: #1F2937; /* bg-gray-800 */
+            border: 1px solid #4B5563; /* border-gray-600 */
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.1);
+        }
+        .btn {
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #0891B2; /* bg-cyan-600 */
+            color: white;
+        }
+        .btn-primary:hover {
+            background-color: #06B6D4; /* bg-cyan-500 */
+            box-shadow: 0 0 15px rgba(14, 165, 233, 0.5);
+        }
+        .btn-secondary {
+            background-color: #374151; /* bg-gray-700 */
+            color: #D1D5DB; /* text-gray-300 */
+        }
+        .btn-secondary:hover {
+            background-color: #4B5563; /* bg-gray-600 */
+        }
+
+        .option-btn {
+            border: 2px solid #4B5563; /* border-gray-600 */
+        }
+        .option-btn.selected {
+            background-color: #0E7490; /* bg-cyan-700 */
+            border-color: #06B6D4; /* border-cyan-500 */
+        }
+        .option-btn.correct {
+            background-color: #059669; /* bg-emerald-600 */
+            border-color: #10B981; /* border-emerald-500 */
+            animation: pulse-green 0.8s infinite;
+        }
+        .option-btn.wrong {
+            background-color: #DC2626; /* bg-red-600 */
+            border-color: #EF4444; /* border-red-500 */
+            animation: shake 0.5s;
+        }
+
+        .feedback-correct {
+            color: #34D399; /* text-emerald-400 */
+            text-shadow: 0 0 10px #34D399;
+        }
+
+        .feedback-wrong {
+             color: #F87171; /* text-red-400 */
+             text-shadow: 0 0 10px #F87171;
+        }
+        
+        .explanation {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-left: 4px solid #0891B2; /* border-cyan-600 */
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+        
+        @keyframes pulse-green {
+            0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+            50% { box-shadow: 0 0 15px 5px rgba(16, 185, 129, 0); }
+        }
+
+        /* Hide scrollbar */
+        ::-webkit-scrollbar {
+            display: none;
+        }
+        -ms-overflow-style: none;  /* IE and Edge */
+        scrollbar-width: none;  /* Firefox */
+    </style>
+</head>
+<body class="text-gray-200 flex items-center justify-center min-h-screen p-4">
+
+    <div id="main-container" class="w-full max-w-2xl mx-auto">
+
+        <!-- Language Selection -->
+        <div id="language-selection" class="card rounded-xl p-8 text-center">
+            <h1 class="text-3xl font-bold mb-2 text-cyan-400 font-roboto-mono">Welcome / स्वागतम् / ସ୍ୱାଗତମ୍</h1>
+            <p class="mb-8 text-gray-400">Choose your language / अपनी भाषा चुनें / ଆପଣଙ୍କ ଭାଷା ବାଛନ୍ତୁ</p>
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                <button onclick="selectLanguage('english')" class="btn btn-primary font-bold py-4 rounded-lg text-lg">English</button>
+                <button onclick="selectLanguage('hindi')" class="btn btn-primary font-bold py-4 rounded-lg text-lg">हिन्दी</button>
+                <button onclick="selectLanguage('odia')" class="btn btn-primary font-bold py-4 rounded-lg text-lg">ଓଡ଼ିଆ</button>
+            </div>
+        </div>
+
+        <!-- Domain & Level Selection -->
+        <div id="domain-selection" class="hidden card rounded-xl p-8">
+            <h2 id="domain-title" class="text-3xl font-bold mb-6 text-center text-cyan-400 font-roboto-mono"></h2>
+            <div class="space-y-6">
+                <div>
+                    <h3 id="domain-subtitle" class="text-xl font-semibold mb-4 text-center"></h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="selectDomain('Deep Learning')" class="btn btn-secondary font-semibold p-4 rounded-lg">Deep Learning</button>
+                        <button onclick="selectDomain('Automation')" class="btn btn-secondary font-semibold p-4 rounded-lg">Automation</button>
+                        <button onclick="selectDomain('Ethical Hacking')" class="btn btn-secondary font-semibold p-4 rounded-lg">Ethical Hacking</button>
+                    </div>
+                </div>
+                <div>
+                    <h3 id="level-subtitle" class="text-xl font-semibold mb-4 text-center"></h3>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <button onclick="selectLevel('easy')" class="btn btn-secondary font-semibold p-4 rounded-lg">Easy</button>
+                        <button onclick="selectLevel('medium')" class="btn btn-secondary font-semibold p-4 rounded-lg">Medium</button>
+                        <button onclick="selectLevel('hard')" class="btn btn-secondary font-semibold p-4 rounded-lg">Hard</button>
+                    </div>
+                </div>
+            </div>
+             <button id="start-quiz-btn" onclick="startQuiz()" class="btn btn-primary w-full mt-8 py-3 rounded-lg font-bold text-lg" disabled>Start Quiz</button>
+        </div>
+
+        <!-- Quiz Screen -->
+        <div id="quiz-screen" class="hidden card rounded-xl p-6 sm:p-8">
+            <div class="flex justify-between items-center mb-4">
+                <div id="progress-text" class="font-roboto-mono text-cyan-400"></div>
+                <div id="score-text" class="font-roboto-mono text-emerald-400"></div>
+            </div>
+            <div class="w-full bg-gray-700 rounded-full h-2.5 mb-6">
+                <div id="progress-bar" class="bg-cyan-500 h-2.5 rounded-full" style="width: 0%"></div>
+            </div>
+
+            <h2 id="question-text" class="text-2xl font-semibold mb-6 min-h-[100px]"></h2>
+
+            <div id="options-container" class="space-y-4">
+                <!-- Options will be injected here by JS -->
+            </div>
+
+            <div id="feedback-container" class="mt-6 min-h-[120px]">
+                <div id="feedback-message" class="text-3xl font-bold text-center font-roboto-mono"></div>
+                <div id="explanation-text" class="hidden mt-4 p-4 rounded-lg explanation"></div>
+            </div>
+
+            <button id="submit-btn" onclick="submitAnswer()" class="btn btn-primary w-full mt-4 py-3 rounded-lg font-bold">Submit</button>
+            <button id="next-btn" onclick="nextQuestion()" class="hidden btn btn-primary w-full mt-4 py-3 rounded-lg font-bold">Next Question</button>
+        </div>
+        
+        <!-- Results Screen -->
+        <div id="results-screen" class="hidden card rounded-xl p-8 text-center">
+            <h2 id="results-title" class="text-4xl font-bold mb-4 text-cyan-400 font-roboto-mono"></h2>
+            <p id="results-score-text" class="text-2xl mb-2"></p>
+            <p id="results-message" class="text-lg text-gray-400 mb-8"></p>
+            <div class="flex gap-4">
+                 <button id="restart-btn" onclick="restartQuiz()" class="btn btn-primary flex-1 py-3 rounded-lg font-bold"></button>
+                 <button id="main-menu-btn" onclick="goToMainMenu()" class="btn btn-secondary flex-1 py-3 rounded-lg font-bold"></button>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const quizData = {
+            english: {
+                "Deep Learning": {
+                    easy: [
+                        { q: "What is the basic unit of a neural network?", options: ["Neuron", "Pixel", "Node.js", "Algorithm"], answer: "Neuron", explanation: "A neuron, or node, is the fundamental processing unit of a neural network, inspired by the biological neuron." },
+                        { q: "Which of these is a popular Deep Learning framework?", options: ["React", "TensorFlow", "Angular", "Django"], answer: "TensorFlow", explanation: "TensorFlow, developed by Google, is one of the most widely used open-source libraries for deep learning." },
+                        { q: "What does 'training' a model mean?", options: ["Teaching it to code", "Showing it a movie", "Feeding it data to learn patterns", "Deleting its errors"], answer: "Feeding it data to learn patterns", explanation: "Training involves providing a large dataset to the model so it can adjust its internal parameters to make accurate predictions." },
+                        { q: "CNN is primarily used for what type of data?", options: ["Text", "Sound", "Numbers", "Images"], answer: "Images", explanation: "Convolutional Neural Networks (CNNs) are highly effective for tasks involving image recognition and computer vision." },
+                        { q: "What does the 'Deep' in Deep Learning refer to?", options: ["Deep thoughts", "Many layers in the network", "Deep ocean data", "Complex code"], answer: "Many layers in the network", explanation: "The term 'Deep' signifies the presence of multiple hidden layers in the neural network, allowing it to learn more complex features." },
+                        { q: "What is 'overfitting' in machine learning?", options: ["Model is too big", "Model performs well on training data but poorly on new data", "Model is too fast", "Model uses too much power"], answer: "Model performs well on training data but poorly on new data", explanation: "Overfitting occurs when a model learns the training data too well, including its noise, and fails to generalize to unseen data." },
+                        { q: "Which activation function is known for outputting a probability between 0 and 1?", options: ["ReLU", "Tanh", "Sigmoid", "Leaky ReLU"], answer: "Sigmoid", explanation: "The Sigmoid function squashes its input into a range between 0 and 1, making it suitable for binary classification outputs." }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                },
+                "Automation": {
+                    easy: [
+                        { q: "What does RPA stand for?", options: ["Robotic Process Automation", "Real Process Action", "Robotic Personal Assistant", "Real-time Process Automation"], answer: "Robotic Process Automation", explanation: "RPA is a technology that uses software robots or 'bots' to automate repetitive, rules-based business processes." },
+                        { q: "Which task is a good candidate for automation?", options: ["Creative writing", "Strategic planning", "Copy-pasting data between spreadsheets", "Human resource interviews"], answer: "Copy-pasting data between spreadsheets", explanation: "Automation excels at tasks that are repetitive, high-volume, and follow a clear set of rules, like data entry." },
+                        { q: "What is a 'workflow' in automation?", options: ["A group of workers", "A sequence of tasks", "A computer virus", "A type of robot"], answer: "A sequence of tasks", explanation: "A workflow defines the series of steps or tasks that are executed in a specific order to complete a process." },
+                        { q: "Which of these is an automation tool?", options: ["Photoshop", "UiPath", "Visual Studio Code", "Figma"], answer: "UiPath", explanation: "UiPath is a leading platform for Robotic Process Automation (RPA), allowing users to design and deploy software robots." },
+                        { q: "What is the main goal of industrial automation?", options: ["To hire more people", "To increase production and efficiency", "To make factories look modern", "To reduce computer usage"], answer: "To increase production and efficiency", explanation: "The primary objective of industrial automation is to improve productivity, reduce errors, and enhance safety and efficiency in manufacturing." },
+                        { q: "An 'if-then' statement in automation is an example of what?", options: ["A robot's name", "A hardware component", "Rules-based logic", "A random process"], answer: "Rules-based logic", explanation: "If-then logic is fundamental to automation, where a specific action is taken only if a certain condition is met." },
+                        { q: "What does 'unattended automation' mean?", options: ["The robot is not paying attention", "The robot works without human supervision", "The robot is broken", "The robot only works at night"], answer: "The robot works without human supervision", explanation: "Unattended bots can run scheduled tasks in the background on their own, typically for large-scale, batch-processing jobs." }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                },
+                "Ethical Hacking": {
+                    easy: [
+                        { q: "What is another name for an ethical hacker?", options: ["Black Hat Hacker", "Script Kiddie", "White Hat Hacker", "Cracker"], answer: "White Hat Hacker", explanation: "White Hat hackers are security professionals who use their skills to find vulnerabilities with permission, to help organizations improve their security." },
+                        { q: "What is the main goal of ethical hacking?", options: ["To steal data", "To crash systems", "To identify and fix security weaknesses", "To create viruses"], answer: "To identify and fix security weaknesses", explanation: "The primary purpose is to proactively find vulnerabilities before malicious attackers can exploit them." },
+                        { q: "What is a 'phishing' attack?", options: ["A fishing trip for hackers", "A type of computer hardware", "An attempt to steal sensitive information through deceptive emails or websites", "A method to cool down a server"], answer: "An attempt to steal sensitive information through deceptive emails or websites", explanation: "Phishing attacks trick users into revealing information like passwords or credit card numbers by masquerading as a trustworthy entity." },
+                        { q: "In hacking, what does 'pentesting' stand for?", options: ["Penetration Testing", "Permanent Testing", "Pencil Testing", "Pentagon Testing"], answer: "Penetration Testing", explanation: "Penetration Testing is a simulated cyber attack against your computer system to check for exploitable vulnerabilities." },
+                        { q: "Which of these is a common tool used by ethical hackers?", options: ["Microsoft Word", "Nmap", "Calculator", "Google Chrome"], answer: "Nmap", explanation: "Nmap (Network Mapper) is a powerful, free tool used for network discovery and security auditing." },
+                        { q: "What is a 'firewall'?", options: ["A physical wall that is on fire", "A software that writes code", "A network security device that monitors and filters traffic", "A type of malware"], answer: "A network security device that monitors and filters traffic", explanation: "A firewall acts as a barrier between a trusted internal network and an untrusted external network, like the Internet." },
+                        { q: "What is a 'strong' password?", options: ["Your name", "123456", "A long mix of upper/lower case letters, numbers, and symbols", "password"], answer: "A long mix of upper/lower case letters, numbers, and symbols", explanation: "A strong password is long and complex, making it difficult for attackers to guess or crack using brute-force methods." }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                }
+            },
+            hindi: {
+                "Deep Learning": {
+                    easy: [
+                        { q: "न्यूरल नेटवर्क की मूल इकाई क्या है?", options: ["न्यूरॉन", "पिक्सेल", "नोड.जेएस", "एल्गोरिथम"], answer: "न्यूरॉन", explanation: "एक न्यूरॉन, या नोड, एक न्यूरल नेटवर्क की मौलिक प्रसंस्करण इकाई है, जो जैविक न्यूरॉन से प्रेरित है।" },
+                        { q: "इनमें से कौन सा एक लोकप्रिय डीप लर्निंग फ्रेमवर्क है?", options: ["रिएक्ट", "टेन्सरफ्लो", "एंगुलर", "जैंगो"], answer: "टेन्सरफ्लो", explanation: "Google द्वारा विकसित टेन्सरफ्लो, डीप लर्निंग के लिए सबसे व्यापक रूप से उपयोग की जाने वाली ओपन-सोर्स लाइब्रेरी में से एक है।" },
+                        { q: "एक मॉडल को 'प्रशिक्षित' करने का क्या अर्थ है?", options: ["उसे कोड करना सिखाना", "उसे फिल्म दिखाना", "पैटर्न सीखने के लिए उसे डेटा देना", "उसकी त्रुटियों को हटाना"], answer: "पैटर्न सीखने के लिए उसे डेटा देना", explanation: "प्रशिक्षण में मॉडल को एक बड़ा डेटासेट प्रदान करना शामिल है ताकि वह सटीक भविष्यवाणियां करने के लिए अपने आंतरिक मापदंडों को समायोजित कर सके।" },
+                        { q: "CNN का मुख्य रूप से किस प्रकार के डेटा के लिए उपयोग किया जाता है?", options: ["टेक्स्ट", "ध्वनि", "संख्याएं", "छवियाँ"], answer: "छवियाँ", explanation: "कनवल्शनल न्यूरल नेटवर्क्स (CNNs) छवि पहचान और कंप्यूटर विजन से जुड़े कार्यों के लिए अत्यधिक प्रभावी हैं।" },
+                        { q: "डीप लर्निंग में 'डीप' का क्या अर्थ है?", options: ["गहरे विचार", "नेटवर्क में कई परतें", "गहरे समुद्र का डेटा", "जटिल कोड"], answer: "नेटवर्क में कई परतें", explanation: "'डीप' शब्द न्यूरल नेटवर्क में कई छिपी हुई परतों की उपस्थिति को दर्शाता है, जिससे यह अधिक जटिल विशेषताओं को सीख सकता है।" },
+                        { q: "मशीन लर्निंग में 'ओवरफिटिंग' क्या है?", options: ["मॉडल बहुत बड़ा है", "मॉडल प्रशिक्षण डेटा पर अच्छा प्रदर्शन करता है लेकिन नए डेटा पर खराब", "मॉडल बहुत तेज है", "मॉडल बहुत अधिक शक्ति का उपयोग करता है"], answer: "मॉडल प्रशिक्षण डेटा पर अच्छा प्रदर्शन करता है लेकिन नए डेटा पर खराब", explanation: "ओवरफिटिंग तब होती है जब कोई मॉडल प्रशिक्षण डेटा को बहुत अच्छी तरह से सीख लेता है, जिसमें उसका शोर भी शामिल है, और अनदेखे डेटा के लिए सामान्यीकरण करने में विफल रहता है।" },
+                        { q: "कौन सा एक्टिवेशन फ़ंक्शन 0 और 1 के बीच संभाव्यता को आउटपुट करने के लिए जाना जाता है?", options: ["ReLU", "Tanh", "सिग्मॉइड", "लीकी ReLU"], answer: "सिग्मॉइड", explanation: "सिग्मॉइड फ़ंक्शन अपने इनपुट को 0 और 1 के बीच की सीमा में निचोड़ता है, जो इसे बाइनरी वर्गीकरण आउटपुट के लिए उपयुक्त बनाता है।" }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                },
+                "Automation": {
+                    easy: [
+                        { q: "RPA का पूरा नाम क्या है?", options: ["रोबोटिक प्रोसेस ऑटोमेशन", "रियल प्रोसेस एक्शन", "रोबोटिक पर्सनल असिस्टेंट", "रियल-टाइम प्रोसेस ऑटोमेशन"], answer: "रोबोटिक प्रोसेस ऑटोमेशन", explanation: "RPA एक ऐसी तकनीक है जो दोहराए जाने वाले, नियमों पर आधारित व्यावसायिक प्रक्रियाओं को स्वचालित करने के लिए सॉफ्टवेयर रोबोट या 'बॉट्स' का उपयोग करती है।" },
+                        { q: "कौन सा कार्य स्वचालन के लिए एक अच्छा उम्मीदवार है?", options: ["रचनात्मक लेखन", "रणनीतिक योजना", "स्प्रेडशीट के बीच डेटा कॉपी-पेस्ट करना", "मानव संसाधन साक्षात्कार"], answer: "स्प्रेडशीट के बीच डेटा कॉपी-पेस्ट करना", explanation: "स्वचालन उन कार्यों में उत्कृष्टता प्राप्त करता है जो दोहराए जाने वाले, उच्च-मात्रा वाले होते हैं, और नियमों के एक स्पष्ट सेट का पालन करते हैं, जैसे डेटा प्रविष्टि।" },
+                        { q: "स्वचालन में 'वर्कफ़्लो' क्या है?", options: ["श्रमिकों का एक समूह", "कार्यों का एक क्रम", "एक कंप्यूटर वायरस", "एक प्रकार का रोबोट"], answer: "कार्यों का एक क्रम", explanation: "एक वर्कफ़्लो उन चरणों या कार्यों की श्रृंखला को परिभाषित करता है जो किसी प्रक्रिया को पूरा करने के लिए एक विशिष्ट क्रम में निष्पादित होते हैं।" },
+                        { q: "इनमें से कौन सा एक स्वचालन उपकरण है?", options: ["फोटोशॉप", "UiPath", "विजुअल स्टूडियो कोड", "फिग्मा"], answer: "UiPath", explanation: "UiPath रोबोटिक प्रोसेस ऑटोमेशन (RPA) के लिए एक प्रमुख मंच है, जो उपयोगकर्ताओं को सॉफ्टवेयर रोबोट डिजाइन और तैनात करने की अनुमति देता है।" },
+                        { q: "औद्योगिक स्वचालन का मुख्य लक्ष्य क्या है?", options: ["अधिक लोगों को काम पर रखना", "उत्पादन और दक्षता बढ़ाना", "कारखानों को आधुनिक दिखाना", "कंप्यूटर का उपयोग कम करना"], answer: "उत्पादन और दक्षता बढ़ाना", explanation: "औद्योगिक स्वचालन का प्राथमिक उद्देश्य उत्पादकता में सुधार करना, त्रुटियों को कम करना और विनिर्माण में सुरक्षा और दक्षता को बढ़ाना है।" },
+                        { q: "स्वचालन में 'यदि-तब' कथन किसका एक उदाहरण है?", options: ["एक रोबोट का नाम", "एक हार्डवेयर घटक", "नियम-आधारित तर्क", "एक यादृच्छिक प्रक्रिया"], answer: "नियम-आधारित तर्क", explanation: "यदि-तब तर्क स्वचालन के लिए मौलिक है, जहां एक विशिष्ट कार्रवाई तभी की जाती है जब एक निश्चित शर्त पूरी होती है।" },
+                        { q: "'अनअटेंडेड ऑटोमेशन' का क्या मतलब है?", options: ["रोबोट ध्यान नहीं दे रहा है", "रोबोट बिना मानवीय पर्यवेक्षण के काम करता है", "रोबोट टूट गया है", "रोबोट केवल रात में काम करता है"], answer: "रोबोट बिना मानवीय पर्यवेक्षण के काम करता है", explanation: "अनअटेंडेड बॉट अपने आप पृष्ठभूमि में निर्धारित कार्यों को चला सकते हैं, आमतौर पर बड़े पैमाने पर, बैच-प्रोसेसिंग नौकरियों के लिए।" }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                },
+                "Ethical Hacking": {
+                    easy: [
+                        { q: "एक एथिकल हैकर का दूसरा नाम क्या है?", options: ["ब्लैक हैट हैकर", "स्क्रिप्ट किडी", "व्हाइट हैट हैकर", "क्रैकर"], answer: "व्हाइट हैट हैकर", explanation: "व्हाइट हैट हैकर सुरक्षा पेशेवर होते हैं जो संगठनों को उनकी सुरक्षा में सुधार करने में मदद करने के लिए अनुमति के साथ कमजोरियों को खोजने के लिए अपने कौशल का उपयोग करते हैं।" },
+                        { q: "एथिकल हैकिंग का मुख्य लक्ष्य क्या है?", options: ["डेटा चुराना", "सिस्टम क्रैश करना", "सुरक्षा कमजोरियों की पहचान और उन्हें ठीक करना", "वायरस बनाना"], answer: "सुरक्षा कमजोरियों की पहचान और उन्हें ठीक करना", explanation: "इसका प्राथमिक उद्देश्य दुर्भावनापूर्ण हमलावरों द्वारा उनका फायदा उठाने से पहले सक्रिय रूप से कमजोरियों को खोजना है।" },
+                        { q: "'फ़िशिंग' हमला क्या है?", options: ["हैकर्स के लिए मछली पकड़ने की यात्रा", "एक प्रकार का कंप्यूटर हार्डवेयर", "भ्रामक ईमेल या वेबसाइटों के माध्यम से संवेदनशील जानकारी चुराने का प्रयास", "एक सर्वर को ठंडा करने की एक विधि"], answer: "भ्रामक ईमेल या वेबसाइटों के माध्यम से संवेदनशील जानकारी चुराने का प्रयास", explanation: "फ़िशिंग हमले उपयोगकर्ताओं को एक भरोसेमंद इकाई के रूप में प्रस्तुत करके पासवर्ड या क्रेडिट कार्ड नंबर जैसी जानकारी प्रकट करने के लिए धोखा देते हैं।" },
+                        { q: "हैकिंग में, 'पेनटेस्टिंग' का क्या अर्थ है?", options: ["पेनेट्रेशन टेस्टिंग", "परमानेंट टेस्टिंग", "पेंसिल टेस्टिंग", "पेंटागन टेस्टिंग"], answer: "पेनेट्रेशन टेस्टिंग", explanation: "पेनेट्रेशन टेस्टिंग आपके कंप्यूटर सिस्टम के खिलाफ एक नकली साइबर हमला है ताकि शोषक कमजोरियों की जांच की जा सके।" },
+                        { q: "इनमें से कौन सा एक सामान्य उपकरण है जिसका उपयोग एथिकल हैकर्स द्वारा किया जाता है?", options: ["माइक्रोसॉफ्ट वर्ड", "एनमैप", "कैलकुलेटर", "गूगल क्रोम"], answer: "एनमैप", explanation: "एनमैप (नेटवर्क मैपर) नेटवर्क खोज और सुरक्षा ऑडिटिंग के लिए उपयोग किया जाने वाला एक शक्तिशाली, मुफ्त उपकरण है।" },
+                        { q: "'फ़ायरवॉल' क्या है?", options: ["एक भौतिक दीवार जिसमें आग लगी हो", "एक सॉफ्टवेयर जो कोड लिखता है", "एक नेटवर्क सुरक्षा उपकरण जो ट्रैफिक की निगरानी और फ़िल्टर करता है", "एक प्रकार का मैलवेयर"], answer: "एक नेटवर्क सुरक्षा उपकरण जो ट्रैफिक की निगरानी और फ़िल्टर करता है", explanation: "एक फ़ायरवॉल एक विश्वसनीय आंतरिक नेटवर्क और एक अविश्वसनीय बाहरी नेटवर्क, जैसे इंटरनेट, के बीच एक बाधा के रूप में कार्य करता है।" },
+                        { q: "एक 'मजबूत' पासवर्ड क्या है?", options: ["आपका नाम", "123456", "बड़े/छोटे अक्षरों, संख्याओं और प्रतीकों का एक लंबा मिश्रण", "पासवर्ड"], answer: "बड़े/छोटे अक्षरों, संख्याओं और प्रतीकों का एक लंबा मिश्रण", explanation: "एक मजबूत पासवर्ड लंबा और जटिल होता है, जिससे हमलावरों के लिए ब्रूट-फोर्स तरीकों का उपयोग करके अनुमान लगाना या क्रैक करना मुश्किल हो जाता है।" }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                }
+            },
+            odia: {
+                "Deep Learning": {
+                    easy: [
+                        { q: "ଏକ ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କର ମୌଳିକ ଏକକ କ’ଣ?", options: ["ନ୍ୟୁରନ୍", "ପିକ୍ସେଲ୍", "ନୋଡ୍.ଜେଏସ୍", "ଆଲଗୋରିଦମ୍"], answer: "ନ୍ୟୁରନ୍", explanation: "ଏକ ନ୍ୟୁରନ୍, ବା ନୋଡ୍, ଏକ ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କର ମୌଳିକ ପ୍ରକ୍ରିୟାକରଣ ଏକକ, ଯାହା ଜୈବିକ ନ୍ୟୁରନ୍ ଦ୍ୱାରା ଅନୁପ୍ରାଣିତ।" },
+                        { q: "ଏଥିମଧ୍ୟରୁ କେଉଁଟି ଏକ ଲୋକପ୍ରିୟ ଡିପ୍ ଲର୍ଣ୍ଣିଂ ଫ୍ରେମୱାର୍କ?", options: ["ରିଆକ୍ଟ", "ଟେନସର୍‌ଫ୍ଲୋ", "ଆଙ୍ଗୁଲାର୍", "ଜାଙ୍ଗୋ"], answer: "ଟେନସର୍‌ଫ୍ଲୋ", explanation: "ଗୁଗୁଲ୍ ଦ୍ୱାରା ବିକଶିତ ଟେନସର୍‌ଫ୍ଲୋ, ଡିପ୍ ଲର୍ଣ୍ଣିଂ ପାଇଁ ସବୁଠାରୁ ବହୁଳ ଭାବରେ ବ୍ୟବହୃତ ଓପନ୍-ସୋର୍ସ ଲାଇବ୍ରେରୀ ମଧ୍ୟରୁ ଅନ୍ୟତମ।" },
+                        { q: "ଏକ ମଡେଲକୁ 'ପ୍ରଶିକ୍ଷଣ' ଦେବାର ଅର୍ଥ କ’ଣ?", options: ["ଏହାକୁ କୋଡ୍ କରିବାକୁ ଶିଖାଇବା", "ଏହାକୁ ଏକ ଚଳଚ୍ଚିତ୍ର ଦେଖାଇବା", "ପ୍ୟାଟର୍ଣ୍ଣ ଶିଖିବା ପାଇଁ ଏହାକୁ ଡାଟା ଖାଇବାକୁ ଦେବା", "ଏହାର ତ୍ରୁଟିଗୁଡ଼ିକୁ ବିଲୋପ କରିବା"], answer: "ପ୍ୟାଟର୍ଣ୍ଣ ଶିଖିବା ପାଇଁ ଏହାକୁ ଡାଟା ଖାଇବାକୁ ଦେବା", explanation: "ପ୍ରଶିକ୍ଷଣରେ ମଡେଲକୁ ଏକ ବଡ଼ ଡାଟାସେଟ୍ ପ୍ରଦାନ କରିବା ସାମିଲ, ଯାହାଦ୍ୱାରା ଏହା ସଠିକ୍ ଭବିଷ୍ୟବାଣୀ କରିବା ପାଇଁ ଏହାର ଆଭ୍ୟନ୍ତରୀଣ ପାରାମିଟରଗୁଡ଼ିକୁ ସଜାଡ଼ିପାରିବ।" },
+                        { q: "CNN ମୁଖ୍ୟତଃ କେଉଁ ପ୍ରକାରର ଡାଟା ପାଇଁ ବ୍ୟବହୃତ ହୁଏ?", options: ["ପାଠ୍ୟ", "ଧ୍ୱନି", "ସଂଖ୍ୟା", "ଚିତ୍ର"], answer: "ଚିତ୍ର", explanation: "କନଭୋଲ୍ୟୁସନାଲ୍ ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କ (CNNs) ଚିତ୍ର ଚିହ୍ନଟ ଏବଂ କମ୍ପ୍ୟୁଟର୍ ଭିଜନ୍ ସହିତ ଜଡ଼ିତ କାର୍ଯ୍ୟଗୁଡ଼ିକ ପାଇଁ ଅତ୍ୟନ୍ତ ପ୍ରଭାବଶାଳୀ।" },
+                        { q: "ଡିପ୍ ଲର୍ଣ୍ଣିଂରେ 'ଡିପ୍' କ’ଣ ବୁଝାଏ?", options: ["ଗଭୀର ଚିନ୍ତା", "ନେଟୱାର୍କରେ ଅନେକ ସ୍ତର", "ଗଭୀର ସମୁଦ୍ର ଡାଟା", "ଜଟିଳ କୋଡ୍"], answer: "ନେଟୱାର୍କରେ ଅନେକ ସ୍ତର", explanation: "'ଡିପ୍' ଶବ୍ଦଟି ନ୍ୟୁରାଲ୍ ନେଟୱାର୍କରେ ଏକାଧିକ ଲୁକ୍କାୟିତ ସ୍ତରର ଉପସ୍ଥିତିକୁ ସୂଚିତ କରେ, ଯାହା ଏହାକୁ ଅଧିକ ଜଟିଳ ବୈଶିଷ୍ଟ୍ୟ ଶିଖିବାକୁ ଅନୁମତି ଦିଏ।" },
+                        { q: "ମେସିନ୍ ଲର୍ଣ୍ଣିଂରେ 'ଓଭର୍‌ଫିଟିଂ' କ’ଣ?", options: ["ମଡେଲ୍ ବହୁତ ବଡ଼", "ମଡେଲ୍ ପ୍ରଶିକ୍ଷଣ ଡାଟା ଉପରେ ଭଲ କାମ କରେ କିନ୍ତୁ ନୂଆ ଡାଟା ଉପରେ ଖରାପ", "ମଡେଲ୍ ବହୁତ ଦ୍ରୁତ", "ମଡେଲ୍ ବହୁତ ଶକ୍ତି ବ୍ୟବହାର କରେ"], answer: "ମଡେଲ୍ ପ୍ରଶିକ୍ଷଣ ଡାଟା ଉପରେ ଭଲ କାମ କରେ କିନ୍ତୁ ନୂଆ ଡାଟା ଉପରେ ଖରାପ", explanation: "ଯେତେବେଳେ ଏକ ମଡେଲ୍ ପ୍ରଶିକ୍ଷଣ ଡାଟାକୁ ଏହାର ଶବ୍ଦ ସହିତ ବହୁତ ଭଲ ଭାବରେ ଶିଖେ, ଏବଂ ଅଦେଖା ଡାଟାକୁ ସାଧାରଣ କରିବାରେ ବିଫଳ ହୁଏ, ସେତେବେଳେ ଓଭର୍‌ଫିଟିଂ ହୁଏ।" },
+                        { q: "କେଉଁ ଆକ୍ଟିଭେସନ୍ ଫଙ୍କସନ୍ 0 ଏବଂ 1 ମଧ୍ୟରେ ଏକ ସମ୍ଭାବନା ଆଉଟପୁଟ୍ କରିବା ପାଇଁ ଜଣାଶୁଣା?", options: ["ReLU", "Tanh", "ସିଗମଏଡ୍", "ଲିକି ReLU"], answer: "ସିଗମଏଡ୍", explanation: "ସିଗମଏଡ୍ ଫଙ୍କସନ୍ ଏହାର ଇନପୁଟକୁ 0 ଏବଂ 1 ମଧ୍ୟରେ ଏକ ପରିସରରେ ସଙ୍କୁଚିତ କରେ, ଯାହା ଏହାକୁ ବାଇନାରୀ ବର୍ଗୀକରଣ ଆଉଟପୁଟ୍ ପାଇଁ ଉପଯୁକ୍ତ କରିଥାଏ।" }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                },
+                "Automation": {
+                    easy: [
+                        { q: "RPA ର ପୂର୍ଣ୍ଣ ରୂପ କ’ଣ?", options: ["ରୋବୋଟିକ୍ ପ୍ରୋସେସ୍ ଅଟୋମେସନ୍", "ରିଅଲ୍ ପ୍ରୋସେସ୍ ଆକ୍ସନ୍", "ରୋବୋଟିକ୍ ପର୍ସନାଲ୍ ଆସିଷ୍ଟାଣ୍ଟ", "ରିଅଲ୍-ଟାଇମ୍ ପ୍ରୋସେସ୍ ଅଟୋମେସନ୍"], answer: "ରୋବୋଟିକ୍ ପ୍ରୋସେସ୍ ଅଟୋମେସନ୍", explanation: "RPA ହେଉଛି ଏକ ଟେକ୍ନୋଲୋଜି ଯାହା ପୁନରାବୃତ୍ତି, ନିୟମ-ଆଧାରିତ ବ୍ୟବସାୟିକ ପ୍ରକ୍ରିୟାକୁ ସ୍ୱୟଂଚାଳିତ କରିବା ପାଇଁ ସଫ୍ଟୱେର୍ ରୋବଟ୍ ବା 'ବଟ୍' ବ୍ୟବହାର କରେ।" },
+                        { q: "କେଉଁ କାର୍ଯ୍ୟ ଅଟୋମେସନ୍ ପାଇଁ ଏକ ଭଲ ପ୍ରାର୍ଥୀ?", options: ["ସୃଜନଶୀଳ ଲେଖା", "ରଣନୀତିକ ଯୋଜନା", "ସ୍ପ୍ରେଡସିଟ୍ ମଧ୍ୟରେ ଡାଟା କପି-ପେଷ୍ଟ କରିବା", "ମାନବ ସମ୍ବଳ ସାକ୍ଷାତକାର"], answer: "ସ୍ପ୍ରେଡସିଟ୍ ମଧ୍ୟରେ ଡାଟା କପି-ପେଷ୍ଟ କରିବା", explanation: "ଅଟୋମେସନ୍ ସେହି କାର୍ଯ୍ୟଗୁଡ଼ିକରେ ଉତ୍କର୍ଷ କରେ ଯାହା ପୁନରାବୃତ୍ତି, ଉଚ୍ଚ-ପରିମାଣ ଏବଂ ନିୟମର ଏକ ସ୍ପଷ୍ଟ ସେଟ୍ ଅନୁସରଣ କରେ, ଯେପରିକି ଡାଟା ଏଣ୍ଟ୍ରି।" },
+                        { q: "ଅଟୋମେସନ୍‌ରେ 'ୱାର୍କଫ୍ଲୋ' କ’ଣ?", options: ["କର୍ମଚାରୀଙ୍କ ଏକ ଗୋଷ୍ଠୀ", "କାର୍ଯ୍ୟଗୁଡ଼ିକର ଏକ କ୍ରମ", "ଏକ କମ୍ପ୍ୟୁଟର୍ ଭାଇରସ୍", "ଏକ ପ୍ରକାରର ରୋବଟ୍"], answer: "କାର୍ଯ୍ୟଗୁଡ଼ିକର ଏକ କ୍ରମ", explanation: "ଏକ ୱାର୍କଫ୍ଲୋ ସେହି ପଦକ୍ଷେପ ବା କାର୍ଯ୍ୟଗୁଡ଼ିକର ଶୃଙ୍ଖଳାକୁ ବ୍ୟାଖ୍ୟା କରେ ଯାହା ଏକ ପ୍ରକ୍ରିୟା ସମ୍ପୂର୍ଣ୍ଣ କରିବା ପାଇଁ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ କ୍ରମରେ କାର୍ଯ୍ୟକାରୀ ହୁଏ।" },
+                        { q: "ଏଥିମଧ୍ୟରୁ କେଉଁଟି ଏକ ଅଟୋମେସନ୍ ଟୁଲ୍?", options: ["ଫୋଟୋଶପ୍", "UiPath", "ଭିଜୁଆଲ୍ ଷ୍ଟୁଡିଓ କୋଡ୍", "ଫିଗମା"], answer: "UiPath", explanation: "UiPath ରୋବୋଟିକ୍ ପ୍ରୋସେସ୍ ଅଟୋମେସନ୍ (RPA) ପାଇଁ ଏକ ଅଗ୍ରଣୀ ପ୍ଲାଟଫର୍ମ, ଯାହା ଉପଭୋକ୍ତାମାନଙ୍କୁ ସଫ୍ଟୱେର୍ ରୋବଟ୍ ଡିଜାଇନ୍ ଏବଂ ନିୟୋଜିତ କରିବାକୁ ଅନୁମତି ଦିଏ।" },
+                        { q: "ଶିଳ୍ପ ଅଟୋମେସନ୍‌ର ମୁଖ୍ୟ ଲକ୍ଷ୍ୟ କ’ଣ?", options: ["ଅଧିକ ଲୋକଙ୍କୁ ନିଯୁକ୍ତି ଦେବା", "ଉତ୍ପାଦନ ଏବଂ ଦକ୍ଷତା ବୃଦ୍ଧି କରିବା", "କାରଖାନାଗୁଡ଼ିକୁ ଆଧୁନିକ ଦେଖାଇବା", "କମ୍ପ୍ୟୁଟର୍ ବ୍ୟବହାର କମ୍ କରିବା"], answer: "ଉତ୍ପାଦନ ଏବଂ ଦକ୍ଷତା ବୃଦ୍ଧି କରିବା", explanation: "ଶିଳ୍ପ ଅଟୋମେସନ୍‌ର ପ୍ରାଥମିକ ଉଦ୍ଦେଶ୍ୟ ହେଉଛି ଉତ୍ପାଦକତା ବୃଦ୍ଧି କରିବା, ତ୍ରୁଟି କମ୍ କରିବା, ଏବଂ ଉତ୍ପାଦନରେ ସୁରକ୍ଷା ଓ ଦକ୍ଷତା ବୃଦ୍ଧି କରିବା।" },
+                        { q: "ଅଟୋମେସନ୍‌ରେ 'ଯଦି-ତେବେ' ଷ୍ଟେଟମେଣ୍ଟ୍ କାହାର ଏକ ଉଦାହରଣ?", options: ["ଏକ ରୋବଟ୍‌ର ନାମ", "ଏକ ହାର୍ଡୱେର୍ ଉପାଦାନ", "ନିୟମ-ଆଧାରିତ ତର୍କ", "ଏକ ଯାଦୃଚ୍ଛିକ ପ୍ରକ୍ରିୟା"], answer: "ନିୟମ-ଆଧାରିତ ତର୍କ", explanation: "ଯଦି-ତେବେ ତର୍କ ଅଟୋମେସନ୍ ପାଇଁ ମୌଳିକ, ଯେଉଁଠାରେ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ କାର୍ଯ୍ୟ କେବଳ ସେତେବେଳେ କରାଯାଏ ଯେତେବେଳେ ଏକ ନିର୍ଦ୍ଦିଷ୍ଟ ସର୍ତ୍ତ ପୂରଣ ହୁଏ।" },
+                        { q: "'ଅନଆଟେଣ୍ଡେଡ୍ ଅଟୋମେସନ୍'ର ଅର୍ଥ କ’ଣ?", options: ["ରୋବଟ୍ ଧ୍ୟାନ ଦେଉନାହିଁ", "ରୋବଟ୍ ମାନବ ତଦାରଖ ବିନା କାମ କରେ", "ରୋବଟ୍ ଭାଙ୍ଗିଯାଇଛି", "ରୋବଟ୍ କେବଳ ରାତିରେ କାମ କରେ"], answer: "ରୋବଟ୍ ମାନବ ତଦାରଖ ବିନା କାମ କରେ", explanation: "ଅନଆଟେଣ୍ଡେଡ୍ ବଟ୍‌ଗୁଡ଼ିକ ନିଜେ ପୃଷ୍ଠଭୂମିରେ ନିର୍ଦ୍ଧାରିତ କାର୍ଯ୍ୟଗୁଡ଼ିକୁ ଚଲାଇପାରନ୍ତି, ସାଧାରଣତଃ ବଡ଼ ଆକାରର, ବ୍ୟାଚ୍-ପ୍ରୋସେସିଂ କାର୍ଯ୍ୟ ପାଇଁ।" }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                },
+                "Ethical Hacking": {
+                    easy: [
+                        { q: "ଏକ ଏଥିକାଲ୍ ହ୍ୟାକର୍‌ର ଅନ୍ୟ ନାମ କ’ଣ?", options: ["ବ୍ଲାକ୍ ହାଟ୍ ହ୍ୟାକର୍", "ସ୍କ୍ରିପ୍ଟ୍ କିଡି", "ହ୍ୱାଇଟ୍ ହାଟ୍ ହ୍ୟାକର୍", "କ୍ରାକର୍"], answer: "ହ୍ୱାଇଟ୍ ହାଟ୍ ହ୍ୟାକର୍", explanation: "ହ୍ୱାଇଟ୍ ହାଟ୍ ହ୍ୟାକର୍‌ମାନେ ସୁରକ୍ଷା ପେସାଦାର, ଯେଉଁମାନେ ସଂସ୍ଥାଗୁଡ଼ିକୁ ସେମାନଙ୍କର ସୁରକ୍ଷା ବୃଦ୍ଧି କରିବାରେ ସାହାଯ୍ୟ କରିବା ପାଇଁ ଅନୁମତି ସହିତ ଦୁର୍ବଳତା ଖୋଜିବା ପାଇଁ ସେମାନଙ୍କର କୌଶଳ ବ୍ୟବହାର କରନ୍ତି।" },
+                        { q: "ଏଥିକାଲ୍ ହ୍ୟାକିଂର ମୁଖ୍ୟ ଲକ୍ଷ୍ୟ କ’ଣ?", options: ["ଡାଟା ଚୋରି କରିବା", "ସିଷ୍ଟମ୍ କ୍ରାଶ୍ କରିବା", "ସୁରକ୍ଷା ଦୁର୍ବଳତା ଚିହ୍ନଟ ଏବଂ ସମାଧାନ କରିବା", "ଭାଇରସ୍ ସୃଷ୍ଟି କରିବା"], answer: "ସୁରକ୍ଷା ଦୁର୍ବଳତା ଚିହ୍ନଟ ଏବଂ ସମାଧାନ କରିବା", explanation: "ଏହାର ମୁଖ୍ୟ ଉଦ୍ଦେଶ୍ୟ ହେଉଛି ଦୁର୍ଭାବନାପୂର୍ଣ୍ଣ ଆକ୍ରମଣକାରୀମାନେ ସେଗୁଡ଼ିକୁ ଶୋଷଣ କରିବା ପୂର୍ବରୁ ସକ୍ରିୟ ଭାବରେ ଦୁର୍ବଳତା ଖୋଜିବା।" },
+                        { q: "ଏକ 'ଫିସିଂ' ଆକ୍ରମଣ କ’ଣ?", options: ["ହ୍ୟାକର୍‌ମାନଙ୍କ ପାଇଁ ଏକ ମାଛଧରା ଯାତ୍ରା", "ଏକ ପ୍ରକାରର କମ୍ପ୍ୟୁଟର୍ ହାର୍ଡୱେର୍", "ପ୍ରତାରଣାମୂଳକ ଇମେଲ୍ ବା ୱେବସାଇଟ୍ ମାଧ୍ୟମରେ ସମ୍ବେଦନଶୀଳ ତଥ୍ୟ ଚୋରି କରିବାର ଏକ ପ୍ରୟାସ", "ଏକ ସର୍ଭର୍ ଥଣ୍ଡା କରିବାର ଏକ ପଦ୍ଧତି"], answer: "ପ୍ରତାରଣାମୂଳକ ଇମେଲ୍ ବା ୱେବସାଇଟ୍ ମାଧ୍ୟମରେ ସମ୍ବେଦନଶୀଳ ତଥ୍ୟ ଚୋରି କରିବାର ଏକ ପ୍ରୟାସ", explanation: "ଫିସିଂ ଆକ୍ରମଣ ଉପଭୋକ୍ତାମାନଙ୍କୁ ଏକ ବିଶ୍ୱସ୍ତ ସଂସ୍ଥା ଭାବରେ ଛଦ୍ମବେଶରେ ପାସୱାର୍ଡ ବା କ୍ରେଡିଟ୍ କାର୍ଡ ନମ୍ବର ପରି ତଥ୍ୟ ପ୍ରକାଶ କରିବାକୁ ପ୍ରତାରଣା କରେ।" },
+                        { q: "ହ୍ୟାକିଂରେ 'ପେନଟେଷ୍ଟିଂ'ର ଅର୍ଥ କ’ଣ?", options: ["ପେନିଟ୍ରେସନ୍ ଟେଷ୍ଟିଂ", "ପରମାନେଣ୍ଟ୍ ଟେଷ୍ଟିଂ", "ପେନ୍‌ସିଲ୍ ଟେଷ୍ଟିଂ", "ପେଣ୍ଟାଗନ୍ ଟେଷ୍ଟିଂ"], answer: "ପେନିଟ୍ରେସନ୍ ଟେଷ୍ଟିଂ", explanation: "ପେନିଟ୍ରେସନ୍ ଟେଷ୍ଟିଂ ହେଉଛି ଆପଣଙ୍କ କମ୍ପ୍ୟୁଟର୍ ସିଷ୍ଟମ୍ ବିରୁଦ୍ଧରେ ଏକ ଅନୁକରଣୀୟ ସାଇବର୍ ଆକ୍ରମଣ, ଯାହା ଶୋଷଣୀୟ ଦୁର୍ବଳତା ପାଇଁ ଯାଞ୍ଚ କରେ।" },
+                        { q: "ଏଥିମଧ୍ୟରୁ କେଉଁଟି ଏଥିକାଲ୍ ହ୍ୟାକର୍‌ମାନଙ୍କ ଦ୍ୱାରା ବ୍ୟବହୃତ ଏକ ସାଧାରଣ ଟୁଲ୍?", options: ["ମାଇକ୍ରୋସଫ୍ଟ୍ ୱାର୍ଡ", "ଏନମ୍ୟାପ୍", "କାଲକୁଲେଟର୍", "ଗୁଗୁଲ୍ କ୍ରୋମ୍"], answer: "ଏନମ୍ୟାପ୍", explanation: "ଏନମ୍ୟାପ୍ (ନେଟୱାର୍କ ମ୍ୟାପର୍) ହେଉଛି ନେଟୱାର୍କ ଆବିଷ୍କାର ଏବଂ ସୁରକ୍ଷା ଅଡିଟିଂ ପାଇଁ ବ୍ୟବହୃତ ଏକ ଶକ୍ତିଶାଳୀ, ମାଗଣା ଟୁଲ୍।" },
+                        { q: "ଏକ 'ଫାୟାରୱାଲ୍' କ’ଣ?", options: ["ଏକ ଭୌତିକ କାନ୍ଥ ଯେଉଁଥିରେ ନିଆଁ ଲାଗିଛି", "ଏକ ସଫ୍ଟୱେର୍ ଯାହା କୋଡ୍ ଲେଖେ", "ଏକ ନେଟୱାର୍କ ସୁରକ୍ଷା ଉପକରଣ ଯାହା ଟ୍ରାଫିକକୁ ମନିଟର୍ ଏବଂ ଫିଲ୍ଟର୍ କରେ", "ଏକ ପ୍ରକାରର ମାଲୱେର୍"], answer: "ଏକ ନେଟୱାର୍କ ସୁରକ୍ଷା ଉପକରଣ ଯାହା ଟ୍ରାଫିକକୁ ମନିଟର୍ ଏବଂ ଫିଲ୍ଟର୍ କରେ", explanation: "ଏକ ଫାୟାରୱାଲ୍ ଏକ ବିଶ୍ୱସ୍ତ ଆଭ୍ୟନ୍ତରୀଣ ନେଟୱାର୍କ ଏବଂ ଏକ ଅବିଶ୍ୱସ୍ତ ବାହ୍ୟ ନେଟୱାର୍କ, ଯେପରିକି ଇଣ୍ଟରନେଟ୍, ମଧ୍ୟରେ ଏକ ପ୍ରତିବନ୍ଧକ ଭାବରେ କାର୍ଯ୍ୟ କରେ।" },
+                        { q: "ଏକ 'ଶକ୍ତିଶାଳୀ' ପାସୱାର୍ଡ କ’ଣ?", options: ["ଆପଣଙ୍କ ନାମ", "123456", "ବଡ଼/ଛୋଟ ଅକ୍ଷର, ସଂଖ୍ୟା, ଏବଂ ପ୍ରତୀକର ଏକ ଲମ୍ବା ମିଶ୍ରଣ", "password"], answer: "ବଡ଼/ଛୋଟ ଅକ୍ଷର, ସଂଖ୍ୟା, ଏବଂ ପ୍ରତୀକର ଏକ ଲମ୍ବା ମିଶ୍ରଣ", explanation: "ଏକ ଶକ୍ତିଶାଳୀ ପାସୱାର୍ଡ ଲମ୍ବା ଏବଂ ଜଟିଳ, ଯାହା ଆକ୍ରମଣକାରୀମାନଙ୍କ ପାଇଁ ବ୍ରୁଟ୍-ଫୋର୍ସ ପଦ୍ଧତି ବ୍ୟବହାର କରି ଅନୁମାନ କରିବା ବା କ୍ରାକ୍ କରିବା କଷ୍ଟକର କରିଥାଏ।" }
+                    ],
+                    medium: [/* ... /], hard: [/ ... */]
+                }
+            }
+        };
+        
+        // --- Populate Medium and Hard levels by duplicating and slightly modifying Easy questions for demo purposes ---
+        Object.keys(quizData).forEach(lang => {
+            Object.keys(quizData[lang]).forEach(domain => {
+                const easyQuestions = quizData[lang][domain].easy;
+                if (easyQuestions && easyQuestions.length > 0) {
+                    // Medium: a slightly harder version
+                    quizData[lang][domain].medium = easyQuestions.map(q => ({...q, q: [Medium] ${q.q}})).slice(0, 7);
+                    // Hard: a slightly harder version
+                    quizData[lang][domain].hard = easyQuestions.map(q => ({...q, q: [Hard] ${q.q}})).slice(0, 7);
+                }
+            });
+        });
+        
+        const uiText = {
+             english: {
+                domainTitle: "Select Your Arena",
+                domainSubtitle: "Choose a Domain",
+                levelSubtitle: "Choose a Level",
+                startQuiz: "Start Quiz",
+                question: "Question",
+                of: "of",
+                score: "Score",
+                submit: "Submit",
+                next: "Next Question",
+                resultsTitle: "Quiz Complete!",
+                finalScore: "Your final score is",
+                messageGood: "Excellent! You've cracked it!",
+                messageAvg: "Well done! A solid performance.",
+                messagePoor: "Good effort! Keep learning and try again.",
+                restart: "Try Again",
+                mainMenu: "Main Menu",
+                correct: "POWERFUL!",
+                wrong: "CRACKED!",
+             },
+             hindi: {
+                domainTitle: "अपना क्षेत्र चुनें",
+                domainSubtitle: "एक डोमेन चुनें",
+                levelSubtitle: "एक स्तर चुनें",
+                startQuiz: "क्विज़ शुरू करें",
+                question: "प्रश्न",
+                of: "में से",
+                score: "स्कोर",
+                submit: "जमा करें",
+                next: "अगला प्रश्न",
+                resultsTitle: "क्विज़ पूरा हुआ!",
+                finalScore: "आपका अंतिम स्कोर है",
+                messageGood: "बहुत बढ़िया! आपने इसे क्रैक कर दिया!",
+                messageAvg: "बहुत अच्छा! एक ठोस प्रदर्शन।",
+                messagePoor: "अच्छा प्रयास! सीखते रहें और फिर से प्रयास करें।",
+                restart: "पुनः प्रयास करें",
+                mainMenu: "मुख्य मेनू",
+                correct: "शक्तिशाली!",
+                wrong: "गलत!",
+             },
+             odia: {
+                domainTitle: "ଆପଣଙ୍କ କ୍ଷେତ୍ର ବାଛନ୍ତୁ",
+                domainSubtitle: "ଏକ ଡୋମେନ୍ ବାଛନ୍ତୁ",
+                levelSubtitle: "ଏକ ସ୍ତର ବାଛନ୍ତୁ",
+                startQuiz: "କ୍ୱିଜ୍ ଆରମ୍ଭ କରନ୍ତୁ",
+                question: "ପ୍ରଶ୍ନ",
+                of: "ରୁ",
+                score: "ସ୍କୋର୍",
+                submit: "ଜମା କରନ୍ତୁ",
+                next: "ପରବର୍ତ୍ତୀ ପ୍ରଶ୍ନ",
+                resultsTitle: "କ୍ୱିଜ୍ ସମାପ୍ତ!",
+                finalScore: "ଆପଣଙ୍କର ଅନ୍ତିମ ସ୍କୋର୍ ହେଉଛି",
+                messageGood: "ଉତ୍ତମ! ଆପଣ ଏହାକୁ କ୍ରାକ୍ କରିଛନ୍ତି!",
+                messageAvg: "ବହୁତ ଭଲ! ଏକ ଦୃଢ ପ୍ରଦର୍ଶନ।",
+                messagePoor: "ଭଲ ପ୍ରୟାସ! ଶିଖିବା ଜାରି ରଖନ୍ତୁ ଏବଂ ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ।",
+                restart: "ପୁଣି ଚେଷ୍ଟା କରନ୍ତୁ",
+                mainMenu: "ମୁଖ୍ୟ ମେନୁ",
+                correct: "ଶକ୍ତିଶାଳୀ!",
+                wrong: "ଭୁଲ୍!",
+             }
+        };
+
+        let currentLanguage = 'english';
+        let currentDomain = '';
+        let currentLevel = '';
+        let currentQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedOption = null;
+
+        const languageSelectionDiv = document.getElementById('language-selection');
+        const domainSelectionDiv = document.getElementById('domain-selection');
+        const quizScreenDiv = document.getElementById('quiz-screen');
+        const resultsScreenDiv = document.getElementById('results-screen');
+        const startQuizBtn = document.getElementById('start-quiz-btn');
+
+        function selectLanguage(lang) {
+            currentLanguage = lang;
+            languageSelectionDiv.classList.add('hidden');
+            domainSelectionDiv.classList.remove('hidden');
+            updateDomainSelectionText();
+        }
+
+        function updateDomainSelectionText() {
+            const texts = uiText[currentLanguage];
+            document.getElementById('domain-title').innerText = texts.domainTitle;
+            document.getElementById('domain-subtitle').innerText = texts.domainSubtitle;
+            document.getElementById('level-subtitle').innerText = texts.levelSubtitle;
+            startQuizBtn.innerText = texts.startQuiz;
+        }
+
+        function selectDomain(domain) {
+            currentDomain = domain;
+            const buttons = domainSelectionDiv.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (btn.innerText.includes(domain)) {
+                    btn.classList.add('btn-primary');
+                    btn.classList.remove('btn-secondary');
+                } else if (btn.onclick.toString().includes('selectDomain')) {
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-secondary');
+                }
+            });
+            checkSelections();
+        }
+
+        function selectLevel(level) {
+            currentLevel = level;
+            const buttons = domainSelectionDiv.querySelectorAll('button');
+            buttons.forEach(btn => {
+                if (btn.innerText.toLowerCase().includes(level)) {
+                    btn.classList.add('btn-primary');
+                    btn.classList.remove('btn-secondary');
+                } else if (btn.onclick.toString().includes('selectLevel')) {
+                    btn.classList.remove('btn-primary');
+                    btn.classList.add('btn-secondary');
+                }
+            });
+            checkSelections();
+        }
+
+        function checkSelections() {
+            if (currentDomain && currentLevel) {
+                startQuizBtn.disabled = false;
+                startQuizBtn.classList.remove('opacity-50', 'cursor-not-allowed');
+            }
+        }
+
+        function startQuiz() {
+            currentQuestions = quizData[currentLanguage][currentDomain][currentLevel];
+            currentQuestionIndex = 0;
+            score = 0;
+            domainSelectionDiv.classList.add('hidden');
+            quizScreenDiv.classList.remove('hidden');
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            resetState();
+            const question = currentQuestions[currentQuestionIndex];
+            document.getElementById('question-text').innerText = question.q;
+            
+            const optionsContainer = document.getElementById('options-container');
+            optionsContainer.innerHTML = '';
+            question.options.forEach(option => {
+                const button = document.createElement('button');
+                button.innerText = option;
+                button.classList.add('btn', 'option-btn', 'w-full', 'p-4', 'text-left', 'rounded-lg');
+                button.onclick = () => selectAnswer(button, option);
+                optionsContainer.appendChild(button);
+            });
+
+            updateProgress();
+        }
+
+        function selectAnswer(button, option) {
+            const allOptions = document.querySelectorAll('.option-btn');
+            allOptions.forEach(btn => btn.classList.remove('selected'));
+            button.classList.add('selected');
+            selectedOption = option;
+        }
+
+        function submitAnswer() {
+            if (selectedOption === null) return;
+            
+            const question = currentQuestions[currentQuestionIndex];
+            const isCorrect = selectedOption === question.answer;
+
+            const feedbackMessage = document.getElementById('feedback-message');
+            const explanationText = document.getElementById('explanation-text');
+
+            if (isCorrect) {
+                score++;
+                feedbackMessage.innerText = uiText[currentLanguage].correct;
+                feedbackMessage.classList.add('feedback-correct');
+                feedbackMessage.classList.remove('feedback-wrong');
+            } else {
+                feedbackMessage.innerText = uiText[currentLanguage].wrong;
+                feedbackMessage.classList.add('feedback-wrong');
+                feedbackMessage.classList.remove('feedback-correct');
+                explanationText.innerHTML = <strong>Correct Answer:</strong> ${question.answer}<br>${question.explanation};
+                explanationText.classList.remove('hidden');
+            }
+            
+            highlightAnswers(question.answer);
+            updateProgress();
+
+            document.getElementById('submit-btn').classList.add('hidden');
+            document.getElementById('next-btn').classList.remove('hidden');
+            document.getElementById('next-btn').innerText = uiText[currentLanguage].next;
+        }
+
+        function highlightAnswers(correctAnswer) {
+            const allOptions = document.querySelectorAll('.option-btn');
+            allOptions.forEach(btn => {
+                btn.disabled = true; // Disable all options after submission
+                if (btn.innerText === correctAnswer) {
+                    btn.classList.add('correct');
+                } else if (btn.classList.contains('selected')) {
+                    btn.classList.add('wrong');
+                }
+            });
+        }
+        
+        function nextQuestion() {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < currentQuestions.length) {
+                loadQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function resetState() {
+            selectedOption = null;
+            document.getElementById('feedback-message').innerText = '';
+            document.getElementById('explanation-text').classList.add('hidden');
+            document.getElementById('submit-btn').classList.remove('hidden');
+            document.getElementById('next-btn').classList.add('hidden');
+            document.getElementById('submit-btn').innerText = uiText[currentLanguage].submit;
+        }
+        
+        function updateProgress() {
+            const texts = uiText[currentLanguage];
+            document.getElementById('progress-text').innerText = ${texts.question} ${currentQuestionIndex + 1} ${texts.of} ${currentQuestions.length};
+            document.getElementById('score-text').innerText = ${texts.score}: ${score};
+            const progressPercentage = ((currentQuestionIndex) / currentQuestions.length) * 100;
+            document.getElementById('progress-bar').style.width = ${progressPercentage}%;
+        }
+
+        function showResults() {
+            quizScreenDiv.classList.add('hidden');
+            resultsScreenDiv.classList.remove('hidden');
+            
+            const texts = uiText[currentLanguage];
+            const percentage = (score / currentQuestions.length) * 100;
+            
+            document.getElementById('results-title').innerText = texts.resultsTitle;
+            document.getElementById('results-score-text').innerText = ${texts.finalScore} ${score} / ${currentQuestions.length};
+            
+            let message = '';
+            if (percentage >= 80) message = texts.messageGood;
+            else if (percentage >= 50) message = texts.messageAvg;
+            else message = texts.messagePoor;
+            document.getElementById('results-message').innerText = message;
+
+            document.getElementById('restart-btn').innerText = texts.restart;
+            document.getElementById('main-menu-btn').innerText = texts.mainMenu;
+        }
+        
+        function restartQuiz() {
+            resultsScreenDiv.classList.add('hidden');
+            startQuiz();
+        }
+
+        function goToMainMenu() {
+            // Reset everything to initial state
+            currentDomain = '';
+            currentLevel = '';
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedOption = null;
+            
+            resultsScreenDiv.classList.add('hidden');
+            languageSelectionDiv.classList.remove('hidden');
+
+            // Reset domain selection screen buttons
+            const buttons = domainSelectionDiv.querySelectorAll('button');
+            buttons.forEach(btn => {
+                btn.classList.remove('btn-primary');
+                btn.classList.add('btn-secondary');
+            });
+            startQuizBtn.disabled = true;
+        }
+
+    </script>
+</body>
+</html>
